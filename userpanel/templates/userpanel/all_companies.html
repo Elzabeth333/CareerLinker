@@ -1,0 +1,73 @@
+{% extends 'userpanel/user_base.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block content %}
+<style>
+    .card {
+        border-radius: 15px;
+    }
+
+    .card-img-top {
+        max-height: 100px;
+        object-fit: contain;
+    }
+
+    .card-title {
+        font-weight: bold;
+    }
+
+    .btn-link {
+        color: #007bff;
+    }
+
+    .btn-link:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    .text-muted {
+        font-size: 14px;
+    }
+    .container {
+        max-width: 1300px;
+        
+        background-color: #f9f9f9;
+        
+    }
+    
+</style>
+
+
+
+<div class="container my-5"  style="margin-left: 150px;margin-right: 300px;">
+    <div class="d-flex justify-content-between">
+        <h3>Top companies</h3>
+        <a href="{% url 'all_companies' %}" class="text-decoration-none">View all</a>
+    </div>
+    <p class="text-muted">Hiring for Technology / IT</p>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-3 g-2">
+        {% for company in companies %}
+        <div class="col">
+            <div class="card h-100 text-center p-3 shadow-sm" style="width: 300px;height: 300px;">
+                <img src="{{ company.company_logo.url }}" class="card-img-top" alt="{{ company.company_name }}" style="height: 100px; object-fit: contain;">
+                <div class="card-body">
+                    <h5 class="card-title">{{ company.company_name }}</h5>
+                    <p class="card-text">
+                        <span class="text-warning">&#9733; {{ company.rating }}</span> 
+                        <span class="text-muted">{{ company.reviews_count }} reviews</span>
+                    </p>
+                    <a href="{% url 'jobs_by_company' company.id %}" class="btn btn-link text-decoration-none">View jobs</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+{% endblock %}

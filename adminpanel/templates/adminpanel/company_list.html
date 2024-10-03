@@ -1,0 +1,117 @@
+{% extends 'adminpanel/admin_base.html' %}
+{% load static %}
+
+{% block title %}
+Company_List
+{% endblock %}
+
+{% block content %}
+<style>
+    /* Center the table with margin-left and proper alignment */
+    .table-container {
+        transition: all 0.3s ease;
+        max-width: 80%; /* Limit the table width to 80% of the page */
+        margin: 0 auto; /* Center horizontally */
+        background-color: #fff; /* Add a background color to match the dashboard theme */
+    }
+    .table-container:hover {
+        background-color: #f8f9fa; /* Light hover effect */
+    }
+    .company-logo {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .description-short {
+        display: inline;
+    }
+    .description-full {
+        display: none;
+    }
+    .read-more-btn {
+        color: #007bff;
+        cursor: pointer;
+    }
+    h2 {
+        color: #333; /* Match the font color with the base page */
+    }
+    /* Table Styling */
+    .table thead {
+        background-color: #343a40; /* Dark background for header */
+        color: #fff; /* White text for the header */
+    }
+    .btn-primary {
+        background-color: #007bff; /* Primary button color */
+        border-color: #007bff;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3; /* Darken button on hover */
+        border-color: #0056b3;
+    }
+</style>
+
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">Company List</h2>
+    <div class="table-responsive">
+        <table class="table table-hover table-striped table-bordered table-container" style="margin-left: 200px;">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Logo</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Website</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for company in companies %}
+                <tr>
+                    <td>
+                        <img src="{{ company.logo.url }}" alt="{{ company.name }} Logo" class="company-logo">
+                    </td>
+                    <td>{{ company.name }}</td>
+                    <td>
+                        <span class="description-short">{{ company.description|slice:":100" }}...</span>
+                        <span class="description-full">{{ company.description }}</span>
+                        <span class="read-more-btn">Read More</span>
+                    </td>
+                    <td><a href="{{ company.website }}" target="_blank">{{ company.website }}</a></td>
+                    <td>{{ company.location }}</td>
+                    <td>{{ company.created_at|date:"Y-m-d" }}</td>
+                    <td>
+                        <a href="{% url 'company_detail' company.pk %}" class="btn btn-primary">View</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const readMoreButtons = document.querySelectorAll(".read-more-btn");
+
+        readMoreButtons.forEach(button => {
+            button.addEventListener("click", function() {
+                const shortDesc = this.previousElementSibling.previousElementSibling;
+                const fullDesc = this.previousElementSibling;
+                
+                if (fullDesc.style.display === "none") {
+                    fullDesc.style.display = "inline";
+                    shortDesc.style.display = "none";
+                    this.textContent = "Read Less";
+                } else {
+                    fullDesc.style.display = "none";
+                    shortDesc.style.display = "inline";
+                    this.textContent = "Read More";
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

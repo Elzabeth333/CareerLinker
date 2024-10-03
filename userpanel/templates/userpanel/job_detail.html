@@ -1,0 +1,160 @@
+{% extends 'userpanel/user_base.html' %}
+{% load static %}
+
+{% block title %}
+    Job Details
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="card shadow-lg p-4">
+        <h1 class="text-center mb-3">{{ job.title }} at {{ job.company.company_name }}</h1>
+
+        <!-- Flexbox container for job details and company logo -->
+        <div class="job-details" style="display: flex; justify-content: space-between; align-items: flex-start;">
+
+            <!-- Left Column: Job Details -->
+            <div class="job-info" style="flex: 2;">
+                <p><strong>Location:</strong> {{ job.location }}</p>
+                <p><strong>Experience Required:</strong> {{ job.experience_required }}</p>
+                <p><strong>Salary:</strong> {{ job.salary|default:"Not disclosed" }}</p>
+                <p><strong>Openings:</strong> {{ job.openings }}</p>
+                <p><strong>Applicants:</strong> {{ job.applicants }}</p>
+                <p><strong>Status:</strong> {{ job.is_active|yesno:"Active,Inactive" }}</p>
+                <p><strong>Role Category:</strong> {{ job.role|default:"Not specified" }}</p>
+                <p><strong>Industry Type:</strong> {{ job.industry_type }}</p>
+                <p><strong>Employment Type:</strong> {{ job.employment_type }}</p>
+                <p><strong>Key Skills:</strong> {{ job.key_skills }}</p>
+            </div>
+
+            <!-- Display Company Logo -->
+            <div class="company-logo" style="flex: 1; text-align: center; margin-left: 20px;">
+                <img src="{{ job.company.company_logo.url }}" alt="{{ job.company.company_name }}"
+                     style="max-width: 150px; max-height: 150px; object-fit: contain; border-radius: 8px;">
+            </div>
+        </div>
+
+        <!-- Job Description Section -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <p><strong>Job Description:</strong> {{ job.description|default:"Description not provided" }}</p>
+            </div>
+        </div>
+
+        <!-- Company Description Section -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <p><strong>About {{ job.company.company_name }}:</strong></p>
+                <p>{{ job.company.description|default:"No description available" }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Container layout */
+    .container {
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 15px;
+    }
+
+    /* Job Details styling */
+    p {
+        margin-bottom: 10px;
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        color: #333;
+    }
+
+    /* Card styling */
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .card h1 {
+        margin-bottom: 20px;
+    }
+
+    /* Flex container for job details and company logo */
+    .job-details {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    /* Adjust column widths */
+    .job-info {
+        flex: 2;
+    }
+
+    .company-logo {
+        flex: 1;
+        text-align: center;
+    }
+
+    .company-logo img {
+        max-width: 150px;
+        max-height: 150px;
+        object-fit: contain;
+        border-radius: 8px;
+    }
+
+    /* Button styling */
+    .btn-lg {
+        background-color: #ffa500;
+        border-color: #ffa500;
+        transition: all 0.3s ease;
+    }
+
+    .btn-lg:hover {
+        background-color: #e69500;
+        border-color: #e69500;
+    }
+
+    /* Footer styling */
+    .footer {
+        background-color: #d35c97;
+        margin-top: 80px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .job-details {
+            display: block;
+        }
+
+        .col-md-6 {
+            margin-bottom: 20px;
+        }
+
+        .container {
+            padding: 10px;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        h1 {
+            font-size: 1.25rem;
+        }
+
+        p {
+            font-size: 0.85rem;
+        }
+    }
+</style>
+{% endblock %}

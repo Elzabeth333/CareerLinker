@@ -1,0 +1,583 @@
+{% extends 'userpanel/user_base.html' %}
+{% load static %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<div class="dashboard" style="margin-left: 120px;">
+
+    <div style="display: flex; justify-content: flex-start; align-items: start; flex-wrap: wrap;">
+        <div class="profile-card"
+            style="display: flex; flex-direction: column; align-items: center; background: #F4F4F8; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; width: 280px;margin: 10px;top: 10px;">
+            <!-- <img src="{{ user_profile.profile_image.url }}" alt="Profile Image" class="profile-photo" style="width: 100px; height: 100px; border-radius: 50%; margin-bottom: 10px;"> -->
+            <div class="profile-section">
+                {% if profile.profile_image %}
+                <img src="{{ profile.profile_image.url }}" alt="{{ profile.user.username }}'s profile image"
+                    class="profile-image">
+                {% else %}
+                <img src="{% static 'images/default_profile.png' %}" alt="Default profile image" class="profile-image">
+                {% endif %}
+            </div>
+
+            <h3 style="margin: 0;color: black;">{{ user.first_name }}&nbsp;{{ user.last_name }}</h3>
+            <p style="margin: 5px 0; color: gray;">{{ profile.latest_course }}</p>
+            <p style="margin: 5px 0; color: gray;">{{ profile.university }}</p>
+            <p style="font-size: 12px; color: gray;">{{ profile.bio }}</p>
+            <a href="{% url 'add_profile' %}">
+                <button
+                    style="background-color: #FF6B6B; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Complete
+                    profile</button></a>
+
+
+            <div style="width: 100%; margin-top: 20px;">
+                <div style="background: #F4F4F8; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                    <h4 style="margin: 0; color: #555;">Profile performance</h4>
+                    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                        <div style="text-align: center;">
+                            <p style="margin: 5px 0; font-size: 14px;">Search appearances</p>
+                            <p style="margin: 0; font-size: 16px; font-weight: bold;">0</p>
+                        </div>
+                        <div style="text-align: center;">
+                            <p style="margin: 5px 0; font-size: 14px;">Recruiter actions</p>
+                            <p style="margin: 0; font-size: 16px; font-weight: bold;">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding: 10px;text-align: center;">
+                    <ul style="list-style: none; padding: 0;text-align: center;margin-left: 30px;">
+                        <li><a href="{% url 'userhome' %}"
+                                style="text-decoration: none; color: #333; display: flex; align-items: center; padding: 8px 0;"><i
+                                    class="fas fa-home" style="width: 20px; margin-right: 10px;"></i> My home</a></li>
+                        <li><a href="{% url 'all_jobs' %}"
+                                style="text-decoration: none; color: #333; display: flex; align-items: center; padding: 8px 0;"><i
+                                    class="fas fa-briefcase" style="width: 20px; margin-right: 10px;"></i> Jobs</a></li>
+                        <li><a href="{% url 'all_companies' %}"
+                                style="text-decoration: none; color: #333; display: flex; align-items: center; padding: 8px 0;"><i
+                                    class="fas fa-building" style="width: 20px; margin-right: 10px;"></i> Companies</a>
+                        </li>
+                        <li><a href="#"
+                                style="text-decoration: none; color: #333; display: flex; align-items: center; padding: 8px 0;"><i
+                                    class="fas fa-book" style="width: 20px; margin-right: 10px;"></i> Blogs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="job-recommendations"
+            style="display: flex; flex-direction: column; background: #F4F4F8; box-shadow: 0 4px 8px rgba(0,0,0,0.1); padding: 20px; flex-basis: 65%; min-width: 500px;">
+            <div class="status-panel"
+                style="background: linear-gradient(160deg, #00C4CC, #A7FDE8); padding: 20px; border-radius: 10px; color: white; text-align: center; margin-bottom: 20px; position: relative;">
+                <h2>Need help with your resume?</h2>
+                <a href="https://flowcv.com/">
+                    <button
+                        style="background-color: #FF6B6B; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">View
+                        details</button></a>
+                <!-- Include an illustration if relevant -->
+                <img src="{% static 'images/resume-help-illustration.webp' %}" alt="Resume Help"
+                    style="position: absolute; right: 10px; bottom: 10px; width: 25%;">
+            </div>
+            
+            
+
+            <div class="d-flex justify-content-between">
+                <h3>Recommended Jobs For You</h3>
+                <a href="{% url 'recommended_jobs' %}" class="text-decoration-none">View all</a>
+            </div>
+            
+            {% if matched_jobs %}
+                <div class="jobs-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 20px;">
+                    {% for job in matched_jobs|slice:":3" %}
+                        <div class="job-card" style="background: white; padding: 20px; margin: 10px; flex-basis: calc(33.333% - 20px); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; position: relative; height: 280px;">
+                            
+                            <!-- Company Logo -->
+                            <div style="width: 50px; height: 50px; margin-bottom: 10px;">
+                                <img src="{{ job.company.company_logo.url }}" alt="{{ job.company.company_name }}"
+                                     style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;">
+                            </div>
+                    
+                            <!-- Job Title -->
+                            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 5px;">{{ job.title|slice:15 }}</h3>
+                    
+                            <!-- Company Name and Location -->
+                            <div style="margin-bottom: 8px;">
+                                <p style="font-size: 14px; color: #555; margin: 0;">{{ job.company.company_name }}</p>
+                                <p style="font-size: 14px; color: #666; margin: 0;"><i class="fa fa-map-marker"></i> {{ job.location|slice:20 }}</p>
+                            </div>
+                    
+                            <!-- Experience Required -->
+                            <p style="font-size: 14px; color: #666; margin: 0;">Experience: {{ job.experience_required }}</p>
+                    
+                            <!-- Apply Button -->
+                            {% if job.id in applied_jobs %}
+                                <button class="btn btn-secondary" style="margin-top: 10px;" disabled>Applied</button>
+                            {% else %}
+                                <a href="{% url 'apply_for_job' job.pk %}" class="btn btn-success apply-now" style="margin-top: 10px;">Apply Now</a>
+                            {% endif %}
+                    
+                            <!-- View Details Button -->
+                            <a href="{% url 'job_detail' job.pk %}" class="btn btn-primary" style="margin-top: auto; background-color: #0066ff; border-color: #0066ff; border-radius: 6px; color: white; padding: 8px 16px; text-align: center;">View</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center">No recommended jobs at this time. Please update your profile with relevant skills.</p>
+            {% endif %}
+
+
+
+
+            <div class="container my-5">
+                <div class="d-flex justify-content-between">
+                    <h3>Top companies</h3>
+                    <a href="{% url 'all_companies' %}" class="text-decoration-none">View all</a>
+                </div>
+                <p class="text-muted">Hiring for Technology / IT</p>
+            
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for company in companies %}
+                    <div class="col">
+                        <div class="card h-100 text-center p-3 shadow-sm">
+                            <img src="{{ company.company_logo.url }}" class="card-img-top" alt="{{ company.company_name }}" style="height: 100px; object-fit: contain;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ company.company_name }}</h5>
+                                <p class="card-text">
+                                    <span class="text-warning">&#9733; {{ company.rating }}</span> 
+                                    <span class="text-muted">{{ company.reviews_count }} reviews</span>
+                                </p>
+                                <a href="{% url 'jobs_by_company' company.id %}" class="btn btn-link text-decoration-none">View jobs</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+
+
+            <!-- Display user's skills -->
+            <div class="blog-section" style="background: #fff; padding: 20px; margin-top: 20px;">
+<div id="skillsList" class="skills-list" >
+    {% for skill in user_skills %}
+    <div class="skill-tag" style="height: 40px;">
+        {{ skill.name }}
+        <form method="POST" style="display:inline;" >
+            {% csrf_token %}
+            <input type="hidden" name="skill_id" value="{{ skill.id }}" >
+            <button type="submit" name="delete_skill" class="btn btn-danger btn-sm">
+                <i class="fa fa-trash"></i> <!-- Trash icon for delete -->
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Add new skill -->
+<form method="POST" class="mt-3">
+    {% csrf_token %}
+    <input type="text" name="skill_name" class="form-control" placeholder="Type and add a skill" required>
+    <button type="submit" name="add_skill" class="btn btn-info mt-2">Add Skill</button>
+</form>
+</div>
+
+
+
+
+<form method="POST" action="{% url 'userhome' %}">
+    {% csrf_token %}
+    <div class="blog-section" style="background: #fff; padding: 20px; margin-top: 20px;">
+        <div id="languageSection">
+            {% for language in languages %}
+            <div class="row mb-3" id="language_row_{{ forloop.counter0 }}">
+                <div class="col-md-3">
+                    <label for="language_{{ forloop.counter0 }}">Language</label>
+                    <input type="text" class="form-control" id="language_{{ forloop.counter0 }}"
+                        name="language_{{ forloop.counter0 }}" value="{{ language.language }}">
+                </div>
+                <div class="col-md-3">
+                    <label for="proficiency_{{ forloop.counter0 }}">Proficiency</label>
+                    <input type="text" class="form-control" id="proficiency_{{ forloop.counter0 }}"
+                        name="proficiency_{{ forloop.counter0 }}" value="{{ language.proficiency }}">
+                </div>
+                <div class="col-md-1 mt-3">
+                    <label for="read_{{ forloop.counter0 }}">Read</label>
+                    <input type="checkbox" id="read_{{ forloop.counter0 }}" name="read_{{ forloop.counter0 }}"
+                        {% if language.read %}checked{% endif %}>
+                </div>
+                <div class="col-md-1 mt-3">
+                    <label for="write_{{ forloop.counter0 }}">Write</label>
+                    <input type="checkbox" id="write_{{ forloop.counter0 }}" name="write_{{ forloop.counter0 }}"
+                        {% if language.write %}checked{% endif %}>
+                </div>
+                <div class="col-md-1 mt-3">
+                    <label for="speak_{{ forloop.counter0 }}">Speak</label>
+                    <input type="checkbox" id="speak_{{ forloop.counter0 }}" name="speak_{{ forloop.counter0 }}"
+                        {% if language.speak %}checked{% endif %}>
+                </div>
+                <div class="col-md-2 mt-4">
+                    <a href="#" class="text-danger" onclick="removeLanguageRow({{ forloop.counter0 }})">Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Button to add more languages -->
+        <button type="button" class="btn btn-warning" onclick="addLanguageField()" style="height: 60px;">Add Another Language</button>
+
+        <!-- Save button -->
+        <button type="submit" class="btn btn-warning" style="height: 60px;">Save Profile</button>
+    </div>
+</form>
+
+
+
+
+
+            <div class="blog-section" style="background: #fff; padding: 20px; margin-top: 20px;">
+                
+                <div style="display: flex; justify-content: space-between; margin-top: 20px; overflow-x: auto;">
+                    <div
+                        style="background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-right: 20px; width: 240px;">
+                        <img src="{% static 'images/blog-1.jpg' %}" alt="Blog Image"
+                            style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                        <div style="padding: 10px;">
+                            <h3 style="margin: 0;">How to Write Leave Application for Sister's Marriage?</h3>
+                            <p style="color: gray; font-size: 12px;">Naukri blog • 20 Sep 2024</p>
+                        </div>
+                    </div>
+                    <div
+                        style="background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-right: 20px; width: 240px;">
+                        <img src="{% static 'images/blog-2.jpg' %}" alt="Blog Image"
+                            style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                        <div style="padding: 10px;">
+                            <h3 style="margin: 0;">How to Optimize Your Job Search with AI: Tips</h3>
+                            <p style="color: gray; font-size: 12px;">Naukri blog • 23 Aug 2024</p>
+                        </div>
+                    </div>
+                    <div
+                        style="background: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); margin-right: 20px; width: 240px;">
+                        <img src="{% static 'images/blog-3.jpg' %}" alt="Blog Image"
+                            style="width: 100%; height: 150px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                        <div style="padding: 10px;">
+                            <h3 style="margin: 0;">How to Post a Job Online: Step-by-Step Guide for Employers</h3>
+                            <p style="color: gray; font-size: 12px;">Naukri blog • 21 Aug 2024</p>
+                        </div>
+                        <a href="#" style="color: #FF6B6B; text-decoration: none;">View all</a>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+    </div>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<style>
+    .alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border-color: #ffeeba;
+}
+.skill-tag {
+    background-color: #dc143c;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+.skills-list {
+    margin-bottom: 10px;
+}
+/* Responsive Form Styling */
+.language-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.language-input, .proficiency-select {
+    flex: 1;
+    margin-right: 10px;
+    padding: 10px;
+    min-width: 120px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    transition: border-color 0.3s ease;
+}
+
+.proficiency-select {
+    width: 15%;
+    min-width: 120px;
+}
+
+.checkbox-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 25%;
+    min-width: 200px;
+}
+
+.checkbox-group label {
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.delete-button {
+    color: red;
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 15px;
+    transition: color 0.3s ease;
+}
+
+.delete-button:hover {
+    color: darkred;
+}
+
+.add-language-button, .save-profile-button {
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-language-button:hover, .save-profile-button:hover {
+    background-color: #e6a106;
+}
+
+.save-profile-button {
+    width: 150px;
+    margin-top: 20px;
+}
+
+/* Desktop View */
+@media (min-width: 992px) {
+    .dashboard {
+        margin-left: 120px;
+    }
+
+    .profile-card {
+        width: 280px;
+        margin: 10px;
+    }
+
+    .job-recommendations {
+        flex-basis: 65%;
+        min-width: 500px;
+    }
+
+    .jobs-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .job-card {
+        flex-basis: calc(33.333% - 20px);
+        margin: 10px;
+        height: 280px;
+    }
+
+    .skills-list,
+    .language-row {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .blog-section {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+        overflow-x: auto;
+    }
+
+    .blog-section .blog-card {
+        width: 240px;
+        margin-right: 20px;
+    }
+}
+/* Mobile View */
+@media (max-width: 768px) {
+    .dashboard {
+        margin-left: 0;
+    }
+
+    .profile-card {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .job-recommendations {
+        flex-basis: 100%;
+        min-width: 100%;
+    }
+
+    .jobs-container {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .job-card {
+        flex-basis: 100%;
+        margin-bottom: 20px;
+        height: auto;
+    }
+
+    .skills-list {
+        flex-direction: column;
+    }
+
+    .language-row {
+        flex-direction: column;
+    }
+
+    .blog-section {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .blog-section .blog-card {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .add-language-button,
+    .save-profile-button {
+        width: 100%;
+    }
+
+    .status-panel img {
+        display: none;
+    }
+}
+
+</style>
+
+<script>
+    function changeButtonText(button, event) {
+        event.preventDefault(); // Prevent the page from reloading
+
+        // Change button text to 'Applied'
+        button.innerText = 'Applied';
+        
+        // Change background color to grey
+        button.style.backgroundColor = 'grey';
+        
+        // Disable the button
+        button.setAttribute('disabled', 'true');
+
+        // Optional: You could add an AJAX request here to apply for the job without reloading the page
+    }
+
+    function addSkill() {
+        var skillInput = document.getElementById('skillInput');
+        var skillsList = document.getElementById('skillsList');
+        var hiddenSkills = document.getElementById('hiddenSkills');  // Hidden inputs for the form
+        var newSkill = skillInput.value.trim();
+
+        if (newSkill) {
+            // Add new skill visually in the UI
+            var skillTag = document.createElement('span');
+            skillTag.textContent = newSkill;
+            skillTag.className = 'skill-tag';
+            skillsList.appendChild(skillTag);
+
+            // Add new skill as a hidden input field for form submission
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'skills';  // The name used in the form for skills
+            hiddenInput.value = newSkill;
+            hiddenSkills.appendChild(hiddenInput);
+
+            // Clear the input field after adding
+            skillInput.value = '';
+        } else {
+            alert('Please enter a skill to add.');
+        }
+    }
+
+    let languageIndex = {{ languages|length }};
+
+    function addLanguageField() {
+        const languageSection = document.getElementById('languageSection');
+        const newLanguageDiv = document.createElement('div');
+        newLanguageDiv.className = 'row mb-3';
+        newLanguageDiv.id = `language_row_${languageIndex}`;
+        
+        newLanguageDiv.innerHTML = `
+            <div class="col-md-3">
+                <label for="language_${languageIndex}">Language</label>
+                <input type="text" class="form-control" id="language_${languageIndex}" name="language_${languageIndex}" placeholder="Enter language">
+            </div>
+            <div class="col-md-3">
+                <label for="proficiency_${languageIndex}">Proficiency</label>
+                <input type="text" class="form-control" id="proficiency_${languageIndex}" name="proficiency_${languageIndex}" placeholder="Enter proficiency">
+            </div>
+            <div class="col-md-1 mt-3">
+                <label for="read_${languageIndex}">Read</label>
+                <input type="checkbox" id="read_${languageIndex}" name="read_${languageIndex}">
+            </div>
+            <div class="col-md-1 mt-3">
+                <label for="write_${languageIndex}">Write</label>
+                <input type="checkbox" id="write_${languageIndex}" name="write_${languageIndex}">
+            </div>
+            <div class="col-md-1 mt-3">
+                <label for="speak_${languageIndex}">Speak</label>
+                <input type="checkbox" id="speak_${languageIndex}" name="speak_${languageIndex}">
+            </div>
+            <div class="col-md-2 mt-4">
+                <a href="#" class="text-danger" onclick="removeLanguageRow(${languageIndex})">Delete</a>
+            </div>
+        `;
+        
+        languageSection.appendChild(newLanguageDiv);
+        languageIndex++;
+    }
+
+    function removeLanguageRow(index) {
+        const row = document.getElementById(`language_row_${index}`);
+        row.remove();
+    }
+</script>
+
+
+
+    {% endblock %}

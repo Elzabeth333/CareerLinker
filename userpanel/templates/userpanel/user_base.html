@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'user_css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body style="padding-top: 80px; background: linear-gradient(to right, #F4F4F8, #F4F4F8);">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#" style="color: #dc143c; font-family: 'Lucida Sans', Geneva, Verdana, sans-serif; font-size: 24px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; text-shadow: 1px 1px 2px rgba(0,0,0,0.25); margin-left: 120px;">
+                Career Linker
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'userhome' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_jobs' %}">Jobs</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_companies' %}">Companies</a>
+                    </li>
+                </ul>
+                <form class="d-flex ms-auto" method="GET" action="#" style="gap: 10px;">
+                    <input class="form-control me-2" type="search" placeholder="Search jobs here" name="q" aria-label="Search" value="{{ request.GET.q }}">
+                    <button class="btn btn-danger" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+                <div class="profile-container" style="display: flex; align-items: center;margin-left: 150px;">
+                    <a href="{% url 'user_notifications'  %}" class="notification-icon" style="position: relative;">
+                        <i class="fas fa-bell" style="font-size: 24px; color: #6c757d;"></i>
+                        <span class="notification-badge" style="position: absolute; top: -8px; right: -8px; background-color: red; color: white; font-size: 12px; padding: 2px 6px; border-radius: 50%;">3</span>
+                    </a>
+                    <a href="#" class="user-profile" onclick="openSideTab()" style="position: relative; margin-left: 50px; display: inline-block; width: 100px;">
+                        {% if profile.profile_image and profile.profile_image.url %}
+                            <img src="{{ profile.profile_image.url }}" alt="User Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
+                        {% else %}
+                            <img src="{% static 'path_to_default_image/default_profile.png' %}" alt="Default Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
+                        {% endif %}
+                        <span class="profile-notification-badge" style="position: absolute; top: 0px; right: 0px; background-color: red; color: white; font-size: 12px; padding: 2px 6px; border-radius: 50%;">1</span>
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Side Tab -->
+<div id="sideTab" class="side-tab" style="height: 100%; width: 0px; position: fixed; top: 0; right: 0; background-color: #f9f9f9; overflow-x: hidden; transition: 0.5s; z-index: 1050;">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeSideTab()" style="position: absolute; top: 15px; right: 25px; font-size: 36px;">&times;</a>
+    <div class="side-tab-content" style="padding: 20px; margin-top: 60px;">
+        
+        <div style="display: flex; align-items: center; padding: 10px; background-color: #f9f9f9; border-radius: 8px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+            <!-- Profile Image -->
+            <div class="user-profile" style="width: 80px; margin-right: 15px;"> <!-- Reduced margin-right -->
+                {% if profile.profile_image and profile.profile_image.url %}
+                    <img src="{{ profile.profile_image.url }}" alt="User Profile" 
+                        style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
+                {% else %}
+                    <img src="{% static 'path_to_default_image/default_profile.png' %}" alt="Default Profile" 
+                        style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
+                {% endif %}
+            </div>
+        
+            <!-- Name and Education -->
+            <div style="text-align: left;">
+                <h2 style="margin: 0; font-size: 16px;">{{ profile.user.first_name }} {{ profile.user.last_name }}</h2>
+                <p style="margin: 5px 0 0 0; color: #666; font-size: 14px;"><b>{{ profile.latest_course }}</b></p>
+            </div>
+        </div>
+
+        </div>
+
+        <!-- View Profile Button -->
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="{% url 'view_profile' %}" style="text-decoration: none;">
+                <button style="background-color: #FF6B6B; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 14px;">
+                    View Profile
+                </button>
+            </a>
+        </div>
+
+        <!-- Sidebar Links -->
+        <a href="#" style="display: flex; align-items: center; padding: 10px 0; text-decoration: none; color: #333;margin-left: 10px;">
+            <i class="fas fa-bars" style="margin-right: 10px;"></i> Blog
+        </a>
+        <a href="#" style="display: flex; align-items: center; padding: 10px 0; text-decoration: none; color: #333;margin-left: 10px;">
+            <i class="fas fa-cog" style="margin-right: 10px;"></i> Settings
+        </a>
+        <a href="#" style="display: flex; align-items: center; padding: 10px 0; text-decoration: none; color: #333;margin-left: 10px;">
+            <i class="fas fa-question-circle" style="margin-right: 10px;"></i> FAQs
+        </a>
+        <a href="{% url 'user_logout' %}" style="display: flex; align-items: center; padding: 10px 0; text-decoration: none; color: #333;margin-left: 10px;">
+            <i class="fas fa-sign-out-alt" style="margin-right: 10px;"></i> Logout
+        </a>
+
+    </div>
+</div>
+
+
+    {% block content %}{% endblock %}
+
+    <footer style="position: fixed; bottom: 0; width: 100%; background-color: #f1f1f1; text-align: center; padding: 10px;">
+        <p>© 2024 Career Linker. All rights reserved.</p>
+    </footer>
+
+    <script src="{% static 'user_js/script.js' %}"></script>
+    <script>
+        function openSideTab() {
+            document.getElementById("sideTab").style.width = "300px";
+        }
+
+        function closeSideTab() {
+            document.getElementById("sideTab").style.width = "0";
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

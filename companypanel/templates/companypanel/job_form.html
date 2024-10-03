@@ -1,0 +1,68 @@
+{% extends 'companypanel/company_base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ form.instance.pk|yesno:"Edit Job,Add Job" }}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 style="margin-left: 500px;"> Add details </h2>
+    <form method="post" class="form-container shadow-lg p-4 bg-white rounded">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">{{ form.instance.pk|yesno:"Update Job,Add Job" }}</button>
+    </form>
+</div>
+
+<style>
+    /* Responsive layout for smaller devices */
+    @media (max-width: 768px) {
+        .container {
+            margin-left: 0;
+        }
+    }
+
+    /* Styling for form and its elements */
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+        background: #f9f9f9;
+        padding: 30px;
+        border-radius: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .form-container:hover {
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .form-container input, .form-container select, .form-container textarea {
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* Dynamic transition effect when focusing */
+    .form-container input:focus, .form-container select:focus, .form-container textarea:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+    }
+
+    /* Styling the button */
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        border-color: #004085;
+    }
+</style>
+{% endblock %}

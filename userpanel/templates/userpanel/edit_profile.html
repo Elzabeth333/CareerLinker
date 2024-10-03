@@ -1,0 +1,244 @@
+{% extends 'userpanel/user_base.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block content %}
+<style>
+   
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease-in-out;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .profile-section {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .profile-image {
+        display: block;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        border: 3px solid #007bff;
+    }
+
+    .profile-details {
+        flex-grow: 1;
+        padding: 10px;
+    }
+
+    .profile-details p {
+        font-size: 16px;
+        margin-bottom: 10px;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    h3 {
+        color: #007bff;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    /* Responsive design for smaller screens */
+    @media (max-width: 768px) {
+        .profile-section {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .profile-image {
+            margin-bottom: 20px;
+        }
+    }
+     /* Label and input field styling */
+     label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .form-control {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Button styling */
+        button[type="submit"],
+        .btn-info {
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover,
+        .btn-info:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .form-control {
+                margin-bottom: 15px;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            label {
+                font-size: 14px;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+            }
+
+            .form-control {
+                padding: 8px;
+            }
+        }
+
+</style>
+
+<div class="container" >
+    <h2>Edit Profile</h2>
+    <form method="post" enctype="multipart/form-data" style="margin-left: 200px;margin-bottom: 100px;">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <!-- Personal Information Section -->
+            <div class="form-group">
+                <label for="bio">Bio</label>
+                {{ form.bio }}
+            </div>
+
+            <div class="form-group">
+                <label for="location">Location</label>
+                {{ form.location }}
+            </div>
+            <div class="form-group">
+                <label for="location">Mobile number</label>
+                {{ form.mobile_number }}
+            </div>
+            <div class="form-group">
+                <label for="location">Latest Education</label>
+                {{ form.latest_course }}
+            </div>
+            <div class="form-group">
+                <label for="location">University</label>
+                {{ form.university }}
+            </div>
+
+            <div class="form-group">
+                <label for="years_of_experience">Years of Experience</label>
+                {{ form.years_of_experience }}
+            </div>
+
+            <div class="form-group">
+                <label for="current_employer">Current Employer</label>
+                {{ form.current_employer }}
+            </div>
+
+            <div class="form-group">
+                <label for="availability_to_join">Availability to Join</label>
+                {{ form.availability_to_join }}
+            </div>
+
+            <div class="form-group">
+                <label for="date_of_birth">Date of Birth</label>
+                {{ form.date_of_birth }}
+            </div>
+
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                {{ form.gender }}
+            </div>
+
+            <div class="form-group">
+                <label for="marital_status">Marital Status</label>
+                {{ form.marital_status }}
+            </div>
+
+            <div class="form-group">
+                <label for="differently_abled">Differently Abled</label>
+                {{ form.differently_abled }}
+            </div>
+
+            <div class="form-group">
+                <label for="career_break">Career Break</label>
+                {{ form.career_break }}
+            </div>
+
+            <div class="form-group">
+                <label for="hometown">Hometown</label>
+                {{ form.hometown }}
+            </div>
+
+            <div class="form-group">
+                <label for="pincode">Pincode</label>
+                {{ form.pincode }}
+            </div>
+        </div>
+
+        <!-- Profile Image and Resume Section -->
+        <div class="form-section">
+            <div class="form-group">
+                <label for="profile_image">Profile Image</label>
+                {{ form.profile_image }}
+            </div>
+
+            <div class="form-group">
+                <label for="resume">Resume</label>
+                {{ form.resume }}
+            </div>
+
+            <div class="form-group">
+                <label for="cover_letter">Cover Letter</label>
+                {{ form.cover_letter }}
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

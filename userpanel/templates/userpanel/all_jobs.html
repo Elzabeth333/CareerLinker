@@ -1,0 +1,174 @@
+{% extends 'userpanel/user_base.html' %}
+{% load static %}
+
+{% block title %}
+Jobs
+{% endblock %}
+
+{% block content %}
+<style>
+    .container {
+        max-width: 1300px;
+        
+        background-color: #f9f9f9;
+        
+    }
+
+    /* Desktop View */
+    @media (min-width: 992px) {
+        .jobs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-left: 180px;
+            margin-right: 240px;
+        }
+
+        .job-card {
+            flex-basis: calc(25% - 20px); /* 4 columns layout */
+            margin: 10px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .job-card h3 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .job-card p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .btn-primary {
+            background-color: #0066ff;
+            border-color: #0066ff;
+            border-radius: 6px;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            margin-top: auto;
+        }
+    }
+
+    /* Mobile View */
+   /* Mobile View - Fix for Jobs Container */
+@media (max-width: 768px) {
+    .jobs {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Ensure it doesn't cause gaps */
+        margin: 0; /* Remove any unnecessary margin */
+    }
+
+    .job-card {
+        width: 100%; /* Make each card take the full width */
+         /* Add consistent spacing between jobs */
+        
+    }
+
+    .job-card h3 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .job-card p {
+        font-size: 14px;
+    }
+
+    .btn-primary,
+    .btn-success {
+        width: 100%; /* Full width buttons */
+        padding: 10px;
+    }
+}
+    /* Tablet View */
+    @media (min-width: 769px) and (max-width: 991px) {
+        .jobs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-left: 60px;
+            margin-right: 60px;
+        }
+
+        .job-card {
+            flex-basis: calc(33.333% - 20px); /* 3 columns layout for tablets */
+            margin: 10px;
+        }
+
+        .btn-primary {
+            padding: 10px 20px;
+        }
+    }
+</style>
+
+<h2 style="margin-left: 180px;">Available Jobs</h2>
+{% if jobs %}
+<div class="container">
+<div class="jobs">
+    {% for job in jobs %}
+    <div class="job-card">
+        <!-- Display company logo -->
+        <div style="width: 50px; height: 50px; margin-bottom: 10px;">
+            <img src="{{ job.company.company_logo.url }}" alt="{{ job.company.company_name }}"
+                style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px;">
+        </div>
+
+        <!-- Job Title -->
+        <h3>{{ job.title }}</h3>
+
+        <!-- Company Name and Location -->
+        <div style="margin-bottom: 8px;">
+            <p>{{ job.company.company_name }}</p>
+            <p><i class="fa fa-map-marker"></i> {{ job.location }}</p>
+        </div>
+
+        <!-- Experience Required -->
+        <p>Experience Required: {{ job.experience_required }}</p>
+
+        <!-- Apply Button -->
+        {% if job.id in applied_jobs %}
+        <button class="btn btn-secondary" disabled>Applied</button>
+        {% else %}
+        <a href="{% url 'apply_for_job' job.pk %}" class="btn btn-success apply-now">Apply Now</a>
+        {% endif %}
+
+        <!-- View Details button -->
+        <a href="{% url 'job_detail' job.pk %}" class="btn-primary">View</a>
+    </div>
+    {% endfor %}
+</div>
+</div>
+
+<!-- Pagination Links -->
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        {% if jobs.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ jobs.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ jobs.number }}</span></li>
+        {% if jobs.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ jobs.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% else %}
+<p>No jobs available at the moment.</p>
+{% endif %}
+{% endblock %}

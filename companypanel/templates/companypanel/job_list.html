@@ -1,0 +1,42 @@
+{% extends 'companypanel/company_base.html' %}
+{% load static %}
+
+{% block title %}
+    Job List
+{% endblock %}
+
+{% block content %}
+    <h1>Available Jobs</h1>
+    
+    <table class="table table-striped table-bordered" style="margin-left: 20px;margin-top: 50px;">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Company Name</th>
+                <th>Location</th>
+                <th>Experience Required</th>
+                <th>Posted Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ job.title }}</td>
+                <td>{{ job.company_name }}</td>
+                <td>{{ job.location }}</td>
+                <td>{{ job.experience_required }}</td>
+                <td>{{ job.posted_date }}</td>
+                <td>
+                    <a href="{% url 'view_job' job.id %}" class="btn btn-primary">View</a>
+                    <a href="{% url 'edit_job' job.id %}" class="btn btn-warning">Edit</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No jobs available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

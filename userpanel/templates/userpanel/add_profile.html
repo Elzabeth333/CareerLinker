@@ -1,0 +1,415 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Profile</title>
+    <link rel="stylesheet" href="{% static 'user_css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        /* General body styling */
+        body {
+            background: linear-gradient(to right, #F4F4F8, #E0E0E0);
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navbar styling */
+        .navbar {
+            background-color: #fff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .navbar .logo {
+            font-family: 'Lucida Sans', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #dc143c;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+        }
+
+        .navbar .navbar-links a {
+            color: #333;
+            margin-left: 20px;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        .navbar .navbar-links a:hover {
+            color: #dc143c;
+        }
+
+        /* Form container styling */
+        .container {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .container h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Form with two columns */
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        /* Button styling */
+        button[type="submit"],
+        .btn-info {
+            background-color: #007bff;
+            color: #fff;
+            transition: background-color 0.3s ease;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button[type="submit"]:hover,
+        .btn-info:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive styling */
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+
+            .form-group {
+                width: 100%;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            label {
+                font-size: 14px;
+            }
+
+            .form-control {
+                padding: 8px;
+            }
+
+            button[type="submit"] {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar fixed-element">
+            <a href="#" class="logo">Career Linker</a>
+            <div class="navbar-links">
+                <a href="{% url 'userhome' %}">Home</a>
+                <a href="{% url 'all_jobs' %}">Jobs</a>
+                <a href="{% url 'all_companies' %}">Companies</a>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h2>Complete Your Profile</h2>
+        <form method="post" enctype="multipart/form-data" id="profileForm">
+            {% csrf_token %}
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea id="bio" name="bio" class="form-control">{{ form.bio.value|default_if_none:'' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="profile_image">Profile Image</label>
+                    <input type="file" id="profile_image" name="profile_image" class="form-control">
+                </div>
+            </div>
+
+            <div class="form-row">
+                
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" class="form-control" value="{{ form.location.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="resume">Upload Resume</label>
+                    <input type="file" id="resume" name="resume" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="cover_letter">Cover Letter</label>
+                    <textarea id="cover_letter" name="cover_letter" class="form-control">{{ form.cover_letter.value|default_if_none:'' }}</textarea>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="latest_course">Latest Course</label>
+                    <input type="text" id="latest_course" name="latest_course" class="form-control" value="{{ form.latest_course.value|default_if_none:'' }}">
+                </div>
+                <div class="form-group">
+                    <label for="university">University</label>
+                    <input type="text" id="university" name="university" class="form-control" value="{{ form.university.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="mobile_number">Mobile Number</label>
+                    <input type="text" id="mobile_number" name="mobile_number" class="form-control" value="{{ form.mobile_number.value|default_if_none:'' }}">
+                </div>
+                <div class="form-group">
+                    <label for="years_of_experience">Years of Experience</label>
+                    <input type="number" id="years_of_experience" name="years_of_experience" class="form-control" value="{{ form.years_of_experience.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="current_employer">Current Employer</label>
+                    <input type="checkbox" id="current_employer" name="current_employer" {% if form.current_employer.value %}checked{% endif %}>
+                </div>
+                <div class="form-group">
+                    <label for="availability_to_join">Availability to Join</label>
+                    <select id="availability_to_join" name="availability_to_join" class="form-control">
+                        <option value="immediately" {% if form.availability_to_join.value == 'immediately' %}selected{% endif %}>Immediately</option>
+                        <option value="one_month" {% if form.availability_to_join.value == 'one_month' %}selected{% endif %}>One Month</option>
+                        <option value="three_months" {% if form.availability_to_join.value == 'three_months' %}selected{% endif %}>Three Months</option>
+                        <option value="more_than_a_year" {% if form.availability_to_join.value == 'more_than_a_year' %}selected{% endif %}>More than a Year</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date_of_birth">Date of Birth</label>
+                    <input type="date" id="date_of_birth" name="date_of_birth" class="form-control" value="{{ form.date_of_birth.value|default_if_none:'' }}">
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select id="gender" name="gender" class="form-control">
+                        <option value="male" {% if form.gender.value == 'male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if form.gender.value == 'female' %}selected{% endif %}>Female</option>
+                        <option value="transgender" {% if form.gender.value == 'transgender' %}selected{% endif %}>Transgender</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="marital_status">Marital Status</label>
+                    <select id="marital_status" name="marital_status" class="form-control">
+                        <option value="unmarried" {% if form.marital_status.value == 'unmarried' %}selected{% endif %}>Unmarried</option>
+                        <option value="married" {% if form.marital_status.value == 'married' %}selected{% endif %}>Married</option>
+                        <option value="widowed" {% if form.marital_status.value == 'widowed' %}selected{% endif %}>Widowed</option>
+                        <option value="divorced" {% if form.marital_status.value == 'divorced' %}selected{% endif %}>Divorced</option>
+                        <option value="separated" {% if form.marital_status.value == 'separated' %}selected{% endif %}>Separated</option>
+                        <option value="others" {% if form.marital_status.value == 'others' %}selected{% endif %}>Others</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="differently_abled">Differently Abled</label>
+                    <input type="checkbox" id="differently_abled" name="differently_abled" {% if form.differently_abled.value %}checked{% endif %}>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="career_break">Career Break</label>
+                    <input type="checkbox" id="career_break" name="career_break" {% if form.career_break.value %}checked{% endif %}>
+                </div>
+                <div class="form-group">
+                    <label for="hometown">Hometown</label>
+                    <input type="text" id="hometown" name="hometown" class="form-control" value="{{ form.hometown.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pincode">Pincode</label>
+                    <input type="text" id="pincode" name="pincode" class="form-control" value="{{ form.pincode.value|default_if_none:'' }}">
+                </div>
+            </div>
+
+           
+    <!-- Skill and Language Proficiency Section -->
+    <div id="skillsList" class="skills-list">
+        <input type="text" id="skillInput" class="form-control" placeholder="Type and add a skill">
+        <button type="button" onclick="addSkill()" class="btn btn-info">Add Skill</button>
+        <input type="hidden" id="skillsInputField" name="skills">
+        <ul id="skillsDisplay"></ul>
+    </div>
+
+    <h3>Language Proficiency</h3>
+    <div id="languageSection">
+        {% for language in languages %}
+        <div class="form-row" id="language_row_{{ forloop.counter0 }}">
+            <div class="form-group">
+                <label for="language_{{ forloop.counter0 }}">Language</label>
+                <input type="text" class="form-control" id="language_{{ forloop.counter0 }}"
+                    name="language_{{ forloop.counter0 }}" value="{{ language.language }}">
+            </div>
+            <div class="form-group">
+                <label for="proficiency_{{ forloop.counter0 }}">Proficiency</label>
+                <input type="text" class="form-control" id="proficiency_{{ forloop.counter0 }}"
+                    name="proficiency_{{ forloop.counter0 }}" value="{{ language.proficiency }}">
+            </div>
+            <div class="form-group">
+                <label>Read</label>
+                <input type="checkbox" id="read_{{ forloop.counter0 }}" name="read_{{ forloop.counter0 }}"
+                    {% if language.read %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                <label>Write</label>
+                <input type="checkbox" id="write_{{ forloop.counter0 }}" name="write_{{ forloop.counter0 }}"
+                    {% if language.write %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                <label>Speak</label>
+                <input type="checkbox" id="speak_{{ forloop.counter0 }}" name="speak_{{ forloop.counter0 }}"
+                    {% if language.speak %}checked{% endif %}>
+            </div>
+            <div class="form-group">
+                <a href="#" class="text-danger" onclick="removeLanguageRow({{ forloop.counter0 }})">Delete</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button type="button" class="btn btn-warning" onclick="addLanguageField()">Add Another Language</button>
+
+    <!-- Save button -->
+    <button type="submit" class="btn btn-warning">Save Profile</button>
+</form>
+</div>
+
+<footer>
+<p>© 2024 Career Linker. All rights reserved.</p>
+</footer>
+
+<script>
+function addSkill() {
+    const skillInput = document.getElementById('skillInput');
+    const skillValue = skillInput.value.trim();
+
+    if (skillValue) {
+        const skillsDisplay = document.getElementById('skillsDisplay');
+        const newSkill = document.createElement('li');
+        newSkill.textContent = skillValue;
+        skillsDisplay.appendChild(newSkill);
+
+        const skillsInputField = document.getElementById('skillsInputField');
+        const currentSkills = skillsInputField.value ? skillsInputField.value.split(',') : [];
+        currentSkills.push(skillValue);
+        skillsInputField.value = currentSkills.join(',');
+
+        skillInput.value = '';
+    } else {
+        alert('Please enter a skill.');
+    }
+}
+
+let languageIndex = {{ languages|length }};
+
+function addLanguageField() {
+    const languageSection = document.getElementById('languageSection');
+    const newLanguageDiv = document.createElement('div');
+    newLanguageDiv.className = 'form-row';
+    newLanguageDiv.id = `language_row_${languageIndex}`;
+    
+    newLanguageDiv.innerHTML = `
+        <div class="form-group">
+            <label for="language_${languageIndex}">Language</label>
+            <input type="text" class="form-control" id="language_${languageIndex}" name="language_${languageIndex}" placeholder="Enter language">
+        </div>
+        <div class="form-group">
+            <label for="proficiency_${languageIndex}">Proficiency</label>
+            <input type="text" class="form-control" id="proficiency_${languageIndex}" name="proficiency_${languageIndex}" placeholder="Enter proficiency">
+        </div>
+        <div class="form-group">
+            <label>Read</label>
+            <input type="checkbox" id="read_${languageIndex}" name="read_${languageIndex}">
+        </div>
+        <div class="form-group">
+            <label>Write</label>
+            <input type="checkbox" id="write_${languageIndex}" name="write_${languageIndex}">
+        </div>
+        <div class="form-group">
+            <label>Speak</label>
+            <input type="checkbox" id="speak_${languageIndex}" name="speak_${languageIndex}">
+        </div>
+        <div class="form-group">
+            <a href="#" class="text-danger" onclick="removeLanguageRow(${languageIndex})">Delete</a>
+        </div>
+    `;
+    
+    languageSection.appendChild(newLanguageDiv);
+    languageIndex++;
+}
+
+function removeLanguageRow(index) {
+    const row = document.getElementById(`language_row_${index}`);
+    row.remove();
+}
+</script>
+
+<script src="{% static 'user_js/script.js' %}"></script>
+
+</body>
+
+</html>

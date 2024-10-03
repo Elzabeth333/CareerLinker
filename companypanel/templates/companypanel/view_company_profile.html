@@ -1,0 +1,49 @@
+{% extends 'companypanel/company_base.html' %}
+{% load static %}
+
+{% block title %}
+Company_Detail
+{% endblock %}
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+
+{% block content %}
+<div class="container mt-5" style="margin-left: 200px;height: 700px;">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- Company Logo -->
+                    <div class="text-center mb-4">
+                        {% if company.company_logo %}
+                        <img src="{{ company.company_logo.url }}" alt="{{ company.company_name }} logo" class="img-fluid" style="max-width: 200px;">
+                    {% else %}
+                        <img src="{% static 'images/default_logo.png' %}" alt="Default logo" class="img-fluid" style="max-width: 200px;">
+                    {% endif %}
+                    </div>
+
+                    <!-- Company Name -->
+                    <h2 class="text-center">{{ company.name }}</h2>
+
+                    <!-- Company Description -->
+                    <p class="text-justify mt-3">{{ company.description }}</p>
+
+                    <!-- Company Website -->
+                    <p class="text-center mt-2">
+                        <a href="{{ company.website }}" target="_blank" class="btn btn-link">
+                            Visit Website
+                        </a>
+                    </p>
+
+                    <!-- Edit Button -->
+                    <div class="text-center mt-4">
+                        <a href="{% url 'edit_company_profile' %}" class="btn btn-primary">
+                            Edit Company
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,171 @@
+{% load static %}
+<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Career Linker | Login</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- All Plugin Css --> 
+        <link rel="stylesheet" href="{% static 'sitevisitor/css/plugins.css' %}">
+        <!-- Style & Common Css --> 
+        <link rel="stylesheet" href="{% static 'sitevisitor/css/common.css' %}">
+        <link rel="stylesheet" href="{% static 'sitevisitor/css/main.css' %}">
+        
+        <style>
+            .login-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px;
+                background: rgba(255, 255, 255, 0.9);
+                border-radius: 10px;
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+                max-width: 500px;
+                margin: 50px auto;
+            }
+            .form-group {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            .form-group label {
+                font-weight: bold;
+                margin-bottom: 5px;
+                color: #e60023;
+            }
+            .form-group input {
+                width: 100%;
+                padding: 10px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                font-size: 16px;
+                background-color: #f7f7f7;
+            }
+            .btn-login {
+                width: 100%;
+                padding: 15px;
+                background-color: #e60023;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            .btn-login:hover {
+                background-color: #cc001f;
+            }
+            @media (max-width: 768px) {
+                .login-container {
+                    padding: 15px;
+                }
+                .btn-login {
+                    padding: 12px;
+                }
+            }
+            /* Logo Styling */
+            .navbar-brand {
+                display: flex;
+                align-items: center;
+                list-style-type: none;
+                padding: 0;
+                margin-left: 50px;
+            }
+
+            .logo-item {
+                margin-right: 20px;
+            }
+
+            .logo-career {
+                color: #dc143c;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+                margin: 0;
+            }
+
+            .logo-linker {
+                color: rgb(38, 37, 37);
+                font-family: monospace;
+                margin: 0;
+            }
+
+            /* Adjust logo sizes and spacing for smaller screens */
+            @media (max-width: 768px) {
+                .logo-career, .logo-linker {
+                    font-size: 24px;
+                }
+
+                .navbar-brand {
+                    justify-content: center;
+                    margin-left: 0;
+                }
+
+                .logo-item {
+                    margin-right: 10px;
+                }
+            }
+        </style>
+    </head>
+    
+    <body>
+        <!-- Navigation Start  -->
+        <nav class="navbar navbar-default navbar-sticky bootsnav">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <!-- Logo Container with CSS for Proper Alignment -->
+                    <ul class="navbar-brand">
+                        <li class="logo-item">
+                            <h1 class="logo-text logo-career">Career</h1>
+                        </li>
+                        <li class="logo-item">
+                            <h1 class="logo-text logo-linker">Linker</h1>
+                        </li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-menu">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{% url 'home' %}">Home</a></li> 
+                        <li class="active"><a href="{% url 'user_login' %}">Login</a></li>
+                        <li><a href="{% url 'user_register' %}">Register</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Navigation End  -->
+        
+        <section class="login-section">
+            <div class="container">
+                <form method="post" action="{% url 'user_login' %}">
+                    {% csrf_token %}
+                    <div class="login-container">
+                        <h2>Login</h2>
+                        <div class="form-group">
+                            <label for="id_username">Username or Email</label>
+                            <input type="text" name="username" id="id_username" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_password">Password</label>
+                            <input type="password" name="password" id="id_password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Login" class="btn-login" style="color: #1c1a1a;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <p>&copy; 2024 Career Linker | Design By Elzabeth Joseph</p>
+            </div>
+        </footer>
+
+        <script src="{% static 'sitevisitor/js/jquery.min.js' %}"></script>
+        <script src="{% static 'sitevisitor/js/bootstrap.min.js' %}"></script>
+    </body>
+</html>
