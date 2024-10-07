@@ -42,16 +42,15 @@
     <ul class="list-group">
         {% for notification in notifications %}
             <li class="list-group-item">
-                <strong>{{ notification.job.title }}</strong> - {{ notification.message }}
-                <div class="notification-details">
-                    <small class="text-muted">{{ notification.created_at|date:"M d, Y, g:i a" }}</small>
-                </div>
+                <strong>{{ notification.subject }}</strong> - {{ notification.body }}
+                <div class="text-muted">{{ notification.created_at|date:"M d, Y, g:i a" }}</div>
             </li>
         {% endfor %}
     </ul>
-    {% else %}
-        <p>No notifications yet.</p>
-    {% endif %}
+{% else %}
+    <p>No notifications yet.</p>
+{% endif %}
+
 </div>
 
 {% endblock %}

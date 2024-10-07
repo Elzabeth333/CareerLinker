@@ -45,7 +45,7 @@
       <div class="sidebar-logo">
         <!-- Logo Header -->
         <div class="logo-header" data-background-color="dark">
-          <a href="index.html" class="logo">
+          <a href="{% url 'company_home' %}" class="logo">
             <img src="{% static 'adminpanel/img/kaiadmin/logo_light11.png' %}" alt="navbar brand" class="navbar-brand"
               height="20" />
             <h3 style="margin-left: 5px; color: aliceblue;">Career Linker</h3>
@@ -68,7 +68,7 @@
         <div class="sidebar-content">
           <ul class="nav nav-secondary">
             <li class="nav-item active">
-              <a data-bs-toggle="collapse" href="#dashboard" class="collapsed" aria-expanded="false">
+              <a data-bs-toggle="collapse" href="{% url 'company_home' %}" class="collapsed" aria-expanded="false">
                 <i class="fas fa-home"></i>
                 <p>Dashboard </p>
                 <!-- Right Side Company Info -->
@@ -123,8 +123,13 @@
                     </a>
                   </li>
                   <li>
-                    <a href="icon-menu.html">
-                      <span class="sub-item">Manage Job Seekers</span>
+                    {% if job and job.id %}
+    <a href="{% url 'selected_candidates'  %}">
+        <span class="sub-item">Selected Candidates</span>
+    </a>
+{% else %}
+    <p>No job available for selected candidates.</p>
+{% endif %}
                     </a>
                   </li>
                 </ul>
@@ -569,14 +574,14 @@
                       <div class="user-box">
                         <div class="avatar-lg">
                           <img
-                            src="{% static 'adminpanel/img/profile.jpg' %}"
+                            src="{{ company.company_logo.url }}"
                             alt="image profile"
                             class="avatar-img rounded"
                           />
                         </div>
                         <div class="u-text">
-                          <h4>Hizrian</h4>
-                          <p class="text-muted">hello@example.com</p>
+                          <h4>{{ logged_user.username }}</h4>
+                          <p class="text-muted">{{ logged_user.username }}123@gmail.com</p>
                           <a
                             href="profile.html"
                             class="btn btn-xs btn-secondary btn-sm"

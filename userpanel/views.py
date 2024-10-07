@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from adminpanel.models import Skill , Job , CompleteProfile , LanguageProficiency , ApplicationNotification , JobApplication , CompanyProfile
+from adminpanel.models import Skill , Job ,  NotificationMessage , CompleteProfile , LanguageProficiency , ApplicationNotification , JobApplication , CompanyProfile
 from .forms import CompleteProfileForm , CompleteProfileSkillForm , LanguageProficiencyForm 
 from django.contrib import messages
 from django.http import HttpResponseRedirect 
@@ -307,9 +307,9 @@ def user_notifications(request):
     profile = get_object_or_404(CompleteProfile, user=request.user)
     # Get notifications where the user is the applicant
     # Exclude any notification where the user is also the company user
-    received_notifications = ApplicationNotification.objects.filter(
-        applicant=request.user
-    ).exclude(company_user=request.user).order_by('-created_at')
+    received_notifications = NotificationMessage.objects.filter(
+        receiver=request.user
+    ).order_by('-created_at')
 
     return render(request, 'userpanel/user_notifications.html', {
         'notifications': received_notifications,

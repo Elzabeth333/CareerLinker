@@ -6,13 +6,14 @@
 {% endblock %}
 
 {% block content %}
+<div class="container" style="height: 100px;">
     <h1>Available Jobs</h1>
     
     <table class="table table-striped table-bordered" style="margin-left: 20px;margin-top: 50px;">
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Company Name</th>
+                <th>Openings</th>
                 <th>Location</th>
                 <th>Experience Required</th>
                 <th>Posted Date</th>
@@ -23,13 +24,14 @@
             {% for job in jobs %}
             <tr>
                 <td>{{ job.title }}</td>
-                <td>{{ job.company_name }}</td>
+                <td>{{ job.openings }}</td>
                 <td>{{ job.location }}</td>
                 <td>{{ job.experience_required }}</td>
-                <td>{{ job.posted_date }}</td>
-                <td>
+                <td>{{ job.posted_at }}</td>
+                <td style="width: 200px;">
                     <a href="{% url 'view_job' job.id %}" class="btn btn-primary">View</a>
-                    <a href="{% url 'edit_job' job.id %}" class="btn btn-warning">Edit</a>
+                    <a href="#" class="btn btn-warning"  style="width: 60px;" onclick="confirmDelete()">Filled</a>
+                    
                 </td>
             </tr>
             {% empty %}
@@ -39,4 +41,13 @@
             {% endfor %}
         </tbody>
     </table>
+</div>
+    <script>
+        function confirmDelete() {
+            if (confirm("Are you sure you want to delete this?")) {
+                // Make an API call or submit a form
+                window.location.href = "/delete-url";
+            }
+        }
+        </script>
 {% endblock %}

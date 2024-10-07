@@ -66,6 +66,19 @@ class Job(models.Model):
         return f"{self.title} at {self.company.company_name}"
 
 
+class NotificationMessage(models.Model):
+    sender = models.ForeignKey(User, related_name='sent_messages', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(User, related_name='received_messages', on_delete=models.CASCADE)
+    subject = models.CharField(max_length=255)
+    body = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)  # Add this field if it's missing
+    is_deleted = models.BooleanField(default=False)  # New field to track if a message is deleted
+    deleted_at = models.DateTimeField(null=True, blank=True)  # New field to store when a message is deleted
+
+    def __str__(self):
+        return f"Message from {self.sender} to {self.receiver}"
+
 
 
 class CompleteProfile(models.Model):
@@ -136,14 +149,26 @@ class ApplicationNotification(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"Notification for {self.job.title} - {self.applicant.username}"
+
+    class Meta:
+        verbose_name = 'Application Notification'
+        verbose_name_plural = 'Application Notifications'
+        ordering = ['-created_at']
+
 
 class JobApplication(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    job = models.ForeignKey('Job', on_delete=models.CASCADE)
     applied_at = models.DateTimeField(auto_now_add=True)
+    
+    # Add this field to track selected applications
+    is_selected = models.BooleanField(default=False)
 
-    class Meta:
-        unique_together = ('user', 'job')  # Ensure a user can apply to a job only once
+    def __str__(self):
+        return f"{self.user.username} applied for {self.job.title}"
+
 
 
 #   class Applicant(models.Model):

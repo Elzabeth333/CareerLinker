@@ -1,0 +1,49 @@
+{% extends 'companypanel/company_base.html' %}
+
+{% block title %}
+Selected Candidates
+{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 20px;margin-left: 20px;">
+    <h2>Selected Candidates for Your Jobs</h2>
+
+    {% if job_selected_candidates %}
+        {% for job, selected_applications in job_selected_candidates.items %}
+            <div class="job-section" style="margin-bottom: 30px;">
+                <h3 style="color: #0066cc;">Job Title: {{ job.title }}</h3>
+                <ul class="list-group">
+                    {% for application in selected_applications %}
+                        <li class="list-group-item" style="border-bottom: 1px solid #ddd; padding: 20px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <!-- Applicant Info -->
+                                    <p><strong>Applicant:</strong> {{ application.user.username }}</p>
+                                    <p><strong>Email:</strong> {{ application.user.email }}</p>
+                                    <p><strong>Applied on:</strong> {{ application.created_at|date:"M d, Y, g:i a" }}</p>
+                                </div>
+
+                                <!-- Resume Link -->
+                                <div>
+                                    {% with profile=application.user.completeprofile %}
+                                        {% if profile.resume %}
+                                            <a href="{{ profile.resume.url }}" target="_blank" class="btn btn-primary" style="margin-left: 20px;">Download Resume</a>
+                                        {% else %}
+                                            <p>No resume uploaded.</p>
+                                        {% endif %}
+                                    {% endwith %}
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No candidates have been selected yet for any job.</p>
+    {% endif %}
+</div>
+
+
+
+{% endblock %}
