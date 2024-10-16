@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import UserCreationForm
-from .forms import  ApplicantRegistrationForm , UserLoginForm , CompanyRegisterForm, CompanyLoginForm
+from .forms import  ApplicantRegistrationForm , UserLoginForm , CompanyRegisterForm, CompanyLoginForm , AdminLoginForm
 from django.contrib import messages
 
 
@@ -27,47 +27,56 @@ def user_register(request):
 
 
 def user_login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            # Check if the user is a superuser or staff
-            if user.is_superuser:
-                login(request, user)
-                return redirect('admin_home')
-            elif user.is_staff:
-                login(request, user)
-                return redirect('company_home')
+    if request.method == "POST":
+        form = UserLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            
+            if user is not None:
+                # Check if user is superuser or staff
+                if user.is_superuser or user.is_staff:
+                    messages.error(request, "Admins or staff members cannot log in here.")
+                else:
+                    login(request, user)
+                    messages.success(request, "Successfully logged in!")
+                    return redirect('userhome')  # Replace with the URL for regular user home
             else:
-                login(request, user)
-                return redirect('userhome')
+                messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, 'Invalid login credentials')
+            messages.error(request, "Form submission is invalid.")
+    else:
+        form = UserLoginForm()
 
-    return render(request, 'sitevisitor/user_login.html')
+    return render(request, 'sitevisitor/user_login.html', {'form': form})
 
 
 
 
 def admin_login(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        
-        if user is not None:
-            if user.is_staff:  # Ensuring only staff/admin can log in
-                login(request, user)
-                messages.success(request, "Successfully logged in!")
-                return redirect('admin_home')  # Redirect to admin dashboard
+        form = AdminLoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                if user.is_superuser:  # Check if the user is a superuser
+                    login(request, user)
+                    messages.success(request, "Successfully logged in!")
+                    return redirect('admin_home')  # Redirect to admin dashboard
+                else:
+                    messages.error(request, "You don't have permission to access the admin panel.")
             else:
-                messages.error(request, "You don't have permission to access the admin panel.")
+                messages.error(request, "Invalid username or password.")
         else:
-            messages.error(request, "Invalid credentials. Please try again.")
+            messages.error(request, "Form data is invalid.")
+    else:
+        form = AdminLoginForm()
 
-    return render(request, 'sitevisitor/admin_login.html')
+    return render(request, 'sitevisitor/admin_login.html', {'form': form})
+
 
 
 

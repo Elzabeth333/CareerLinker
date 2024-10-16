@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import company_home, add_job ,  edit_job ,  view_job , selected_candidates , job_list , add_company_profile,  mark_application,  company_logout ,  view_company_profile, edit_company_profile , delete_notification , application_notifications
+from .views import company_home, add_job ,  edit_job ,  view_job , SelectedCandidatesView , job_list ,  reject_application , add_company_profile,  mark_application,  company_logout ,  view_company_profile, edit_company_profile , delete_notification , application_notifications
 
 urlpatterns = [
     path('', company_home, name='company_home'),
@@ -16,6 +16,8 @@ urlpatterns = [
     path('job_list/', job_list, name='job_list'),
     path('logout/', company_logout, name='company_logout'),
     path('notifications/<int:notification_id>/<str:action>/', mark_application, name='mark_application'),
-    path('selected-candidates/', selected_candidates, name='selected_candidates'),
+    path('reject_application/<int:notification_id>/', reject_application, name='reject_application'),
+    path('company/selected-candidates/<int:job_id>/', SelectedCandidatesView.as_view(), name='selected_candidates'),
+    
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,55 @@
+{% extends 'userpanel/user_base.html' %}
+
+{% block content %}
+    <div class="container" style="margin-top: 30px;">
+        <h2 class="text-center mb-4">Search Results</h2>
+
+        <!-- Display the search query if present -->
+        <div class="search-info">
+            {% if query %}
+                <p class="text-muted">Showing results for "<strong>{{ query }}</strong>":</p>
+            {% else %}
+                <p class="text-muted">All jobs:</p>
+            {% endif %}
+        </div>
+
+        <!-- Job results list -->
+        <div class="job-results">
+            {% if jobs %}
+                <ul class="list-group">
+                    {% for job in jobs %}
+                        <li class="list-group-item mb-3">
+                            <div class="job-header">
+                                <h5><strong>{{ job.title }}</strong> at {{ job.company.company_name }}</h5>
+                                <p class="text-muted">Location: {{ job.location }}</p>
+                            </div>
+                            <div class="job-footer text-right">
+                                <!-- Apply button for each job -->
+                                <a href="{% url 'apply_for_job' job.id %}" class="btn btn-primary">Apply</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-center">No jobs found matching your search criteria.</p>
+            {% endif %}
+        </div>
+    </div>
+    <style>
+        .job-results .list-group-item {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.job-header h5 {
+    margin-bottom: 10px;
+}
+
+.job-footer .btn {
+    margin-top: 10px;
+}
+
+    </style>
+{% endblock %}

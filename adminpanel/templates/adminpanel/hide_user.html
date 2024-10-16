@@ -1,0 +1,77 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block content %}
+<body>
+    <div class="container">
+        <h1>Active Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in hidden_users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>
+                            <form method="post" action="{% url 'unhide_applicant' user.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn hide-btn">unHide</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<style>
+    .container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f4f4f4;
+}
+
+.btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.hide-btn {
+    background-color: #ff6666;
+    color: white;
+}
+
+.unhide-btn {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+</style>
+{% endblock %}

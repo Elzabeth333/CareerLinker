@@ -92,7 +92,7 @@ Home
             {% if matched_jobs %}
                 <div class="jobs-container" style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 20px;">
                     {% for job in matched_jobs|slice:":3" %}
-                        <div class="job-card" style="background: white; padding: 20px; margin: 10px; flex-basis: calc(33.333% - 20px); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; position: relative; height: 280px;">
+                        <div class="job-card" style="background: white; padding: 20px; margin: 10px; flex-basis: calc(33.333% - 20px); border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; flex-direction: column; position: relative; height: 300px;">
                             
                             <!-- Company Logo -->
                             <div style="width: 50px; height: 50px; margin-bottom: 10px;">
@@ -116,7 +116,7 @@ Home
                             {% if job.id in applied_jobs %}
                                 <button class="btn btn-secondary" style="margin-top: 10px;" disabled>Applied</button>
                             {% else %}
-                                <a href="{% url 'apply_for_job' job.pk %}" class="btn btn-success apply-now" style="margin-top: 10px;">Apply Now</a>
+                                <a href="{% url 'apply_for_job' job.pk %}" class="btn btn-success apply-now" style="margin-top: 10px;">Apply Now</a><br>
                             {% endif %}
                     
                             <!-- View Details Button -->

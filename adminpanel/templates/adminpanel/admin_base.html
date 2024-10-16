@@ -88,6 +88,15 @@
                     </a>
                     
                   </li>
+                  <li class="nav-item">
+                    <a  href="{% url 'admin_home' %}">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <p>Home</p>
+                      
+                    </a>
+                    
+                  </li>
+                  
               <li class="nav-section">
                 <span class="sidebar-mini-icon">
                   <i class="fa fa-ellipsis-h"></i>
@@ -103,20 +112,11 @@
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="#">
-                        <span class="sub-item">add company</span>
-                      </a>
-                    </li>
-                    <li>
                       <a href="{% url 'company_list' %}">
                         <span class="sub-item">view companies</span>
                       </a>
                     </li>
-                    <li>
-                      <a href="components/buttons.html">
-                        <span class="sub-item">Edit companies</span>
-                      </a>
-                    </li>
+                    
                     
                   </ul>
                 </div>
@@ -130,15 +130,22 @@
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="sidebar-style-2.html">
-                        <span class="sub-item">Manage Employers</span>
+                      <a href="{% url 'applicant_user_list' %}">
+                        <span class="sub-item">User List</span>
                       </a>
                     </li>
                     <li>
-                      <a href="icon-menu.html">
-                        <span class="sub-item">Manage Job Seekers</span>
+                      <a href="{% url 'hidden_users_list' %}">
+                        <span class="sub-item">Hide user  List</span>
                       </a>
                     </li>
+                    <li>
+                      <a href="{% url 'active_users_list' %}">
+                        <span class="sub-item">Unhide user  List</span>
+                      </a>
+                    </li>
+                    
+                    
                   </ul>
                 </div>
               </li>
@@ -150,11 +157,7 @@
                 </a>
                 <div class="collapse" id="forms">
                   <ul class="nav nav-collapse">
-                    <li>
-                      <a href="{% url 'add_job' %}">
-                        <span class="sub-item">Add Jobs</span>
-                      </a>
-                    </li>
+                   
                     <li>
                         <a href="{% url 'job_list' %}">
                           <span class="sub-item">Jobs list</span>
@@ -172,39 +175,15 @@
                 <div class="collapse" id="tables">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="tables/tables.html">
-                        <span class="sub-item">Manage Email Templates</span>
+                      <a href="{% url 'admin_notifications' %}">
+                        <span class="sub-item">Notifications</span>
                       </a>
                     </li>
-                    <li>
-                      <a href="tables/datatables.html">
-                        <span class="sub-item">View Notification Logs</span>
-                      </a>
-                    </li>
+                    
                   </ul>
                 </div>
               </li>
-              <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#maps">
-                  <i class="fas fa-map-marker-alt"></i>
-                  <p>Reports & Analytics</p>
-                  <span class="caret"></span>
-                </a>
-                <div class="collapse" id="maps">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="maps/googlemaps.html">
-                        <span class="sub-item">Job Listing Performance</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="maps/jsvectormap.html">
-                        <span class="sub-item">User Activity Reports</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
+              
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#charts">
                   <i class="far fa-chart-bar"></i>
@@ -215,14 +194,10 @@
                   <ul class="nav nav-collapse">
                     <li>
                       <a href="charts/charts.html">
-                        <span class="sub-item">System Configuration</span>
+                        <span class="sub-item">Reset password</span>
                       </a>
                     </li>
-                    <li>
-                      <a href="charts/sparkline.html">
-                        <span class="sub-item">Database Backups</span>
-                      </a>
-                    </li>
+                    
                   </ul>
                 </div>
               </li>
@@ -410,7 +385,7 @@
                     aria-expanded="false"
                   >
                     <i class="fa fa-bell"></i>
-                    <span class="notification">4</span>
+                    <span class="notification"></span>
                   </a>
                   <ul
                     class="dropdown-menu notif-box animated fadeIn"

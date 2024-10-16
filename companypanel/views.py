@@ -2,19 +2,24 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import CompanyProfileForm ,  JobForm
-from adminpanel.models import CompanyProfile , NotificationMessage , Job , ApplicationNotification , CompleteProfile , JobApplication
+from adminpanel.models import CompanyProfile , NotificationMessage , Job , ApplicationNotification , CompleteProfile , JobApplication , Notification
 from django.contrib import messages
 from django.db import IntegrityError
 from django.core.mail import send_mail
 from django.conf import settings
 from django.db import transaction
+from django.views import View
 from django.contrib.auth import authenticate, login, logout 
 
 # Create your views here.
 
 def company_home(request):
     logged_user = request.user
-    company = get_object_or_404(CompanyProfile, user=request.user)  # Ensure company is being fetched correctly
+    if not CompanyProfile.objects.filter(user=request.user).exists():
+        # Redirect to add profile page if no company profile exists
+        return redirect('add_company_profile')
+    
+    company = CompanyProfile.objects.get(user=request.user)  # Profile exists, now get it
     job = Job.objects.filter(company__user=request.user).first()
     
     # Make sure to check if job exists
@@ -35,7 +40,6 @@ def company_home(request):
 
 @login_required
 def add_company_profile(request):
-    company = get_object_or_404(CompanyProfile, user=request.user) 
     # Check if the user already has a company profile
     if CompanyProfile.objects.filter(user=request.user).exists():
         messages.error(request, "You already have a company profile. You can edit your profile instead.")
@@ -48,14 +52,49 @@ def add_company_profile(request):
             company_profile.user = request.user  # Link the profile to the logged-in user
             try:
                 company_profile.save()
+
+                # Create a notification for the admin that a new company profile has been added
+                Notification.objects.create(
+                    notification_type='company',
+                    content_object_id=company_profile.id,
+                    message=f"New company {company_profile.company_name} added."
+                )
+
                 return redirect('view_company_profile')  # Redirect to the company profile page after successful creation
             except IntegrityError:
                 messages.error(request, "You already have a company profile.")
                 return redirect('edit_company_profile')  # Redirect to edit profile if a profile exists
     else:
         form = CompanyProfileForm()
+
+    return render(request, 'companypanel/add_company_profile.html', {'form': form})
+
+
+
+
+# @login_required
+# def add_company_profile(request):
+#     company = get_object_or_404(CompanyProfile, user=request.user) 
+#     # Check if the user already has a company profile
+#     if CompanyProfile.objects.filter(user=request.user).exists():
+#         messages.error(request, "You already have a company profile. You can edit your profile instead.")
+#         return redirect('edit_company_profile')  # Redirect to the edit profile page
+
+#     if request.method == 'POST':
+#         form = CompanyProfileForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             company_profile = form.save(commit=False)
+#             company_profile.user = request.user  # Link the profile to the logged-in user
+#             try:
+#                 company_profile.save()
+#                 return redirect('view_company_profile')  # Redirect to the company profile page after successful creation
+#             except IntegrityError:
+#                 messages.error(request, "You already have a company profile.")
+#                 return redirect('edit_company_profile')  # Redirect to edit profile if a profile exists
+#     else:
+#         form = CompanyProfileForm()
     
-    return render(request, 'companypanel/add_company_profile.html', {'form': form , 'company':company})
+#     return render(request, 'companypanel/add_company_profile.html', {'form': form , 'company':company})
 
 
 @login_required
@@ -80,22 +119,49 @@ def edit_company_profile(request):
     return render(request, 'companypanel/edit_company_profile.html', {'form': form , 'company':company})
 
 
-
-# Add Job
 @login_required
 def add_job(request):
     logged_user = request.user
-    company = get_object_or_404(CompanyProfile, user=request.user) 
+    company = get_object_or_404(CompanyProfile, user=request.user)  # Get the company profile linked to the user
+
     if request.method == 'POST':
         form = JobForm(request.POST)
         if form.is_valid():
             job = form.save(commit=False)
-            job.company = request.user.companyprofile  # Assuming the user is linked to a company profile
+            job.company = request.user.companyprofile  # Link the job to the user's company profile
             job.save()
-            return redirect('view_job', pk=job.pk)
+
+            # Create a notification for the admin that a new job has been added
+            Notification.objects.create(
+                notification_type='job',
+                content_object_id=job.id,
+                message=f"New job '{job.title}' added at {job.company.company_name}."
+            )
+
+            return redirect('view_job', pk=job.pk)  # Redirect to the view job page after adding
     else:
         form = JobForm()
-    return render(request, 'companypanel/job_form.html', {'form': form , 'logged_user': logged_user , 'company':company})
+
+    return render(request, 'companypanel/job_form.html', {'form': form, 'logged_user': logged_user, 'company': company})
+
+
+
+
+# # Add Job
+# @login_required
+# def add_job(request):
+#     logged_user = request.user
+#     company = get_object_or_404(CompanyProfile, user=request.user) 
+#     if request.method == 'POST':
+#         form = JobForm(request.POST)
+#         if form.is_valid():
+#             job = form.save(commit=False)
+#             job.company = request.user.companyprofile  # Assuming the user is linked to a company profile
+#             job.save()
+#             return redirect('view_job', pk=job.pk)
+#     else:
+#         form = JobForm()
+#     return render(request, 'companypanel/job_form.html', {'form': form , 'logged_user': logged_user , 'company':company})
 
 # View Job
 @login_required
@@ -154,78 +220,120 @@ def application_notifications(request):
     })
 
 
-def mark_as_selected(job_application):
-    job_application.is_selected = True
-    job_application.save()
+
+
+def mark_application(request, notification_id, action):
+    # Retrieve the notification by ID
+    notification = get_object_or_404(ApplicationNotification, id=notification_id)
+
+    if action == 'selected':
+        job = notification.job
+        if job.openings > 0:
+            job.openings -= 1
+            job.save()
+
+            # Get the company name
+            company_name = job.company.company_name
+
+            # Create a notification for the applicant
+            notification_message = f"You are selected for the first round mock section by {company_name}. Check your mail for further details."
+
+            # Send notification to the applicant's user panel
+            ApplicationNotification.objects.create(
+                job=job,
+                company_user=notification.company_user,
+                applicant=notification.applicant,
+                message=notification_message
+            )
+
+            # Delete the original notification after marking as selected
+            notification.delete()
+
+            messages.success(request, 'The applicant has been notified in their user panel.')
+
+        else:
+            messages.error(request, 'No more job openings available for this position.')
+    elif action == 'deleted':
+        notification.delete()
+        messages.success(request, 'The notification has been deleted.')
+
+    return redirect('application_notifications')  # Adjust the URL name to the correct one
+
+
+
+class SelectedCandidatesView(View):
+    template_name = 'companypanel/selected_candidates.html'  # Path to your template
+
+    def get(self, request, job_id):
+        # Get the job object
+        job = get_object_or_404(Job, id=job_id)
+
+        # Fetch the selected candidates for this job
+        selected_candidates = JobApplication.objects.filter(job=job, is_selected=True)
+
+        return render(request, self.template_name, {
+            'job': job,
+            'selected_candidates': selected_candidates,
+        })
+
 
 
 @login_required
 @transaction.atomic  # Ensure the actions happen together or roll back
-def mark_application(request, notification_id, action):
+def reject_application(request, notification_id):
     notification = get_object_or_404(ApplicationNotification, id=notification_id)
     job = notification.job
     company_name = job.company.company_name
     applicant = notification.applicant
 
-    if action == 'selected':
-        # Mark the applicant as selected in the job application model
-        job_application = JobApplication.objects.filter(user=applicant, job=job).first()
-        if job_application:
-            mark_as_selected(job_application)  # Use the helper function
+    # Mark the applicant's application as rejected
+    job_application = JobApplication.objects.filter(user=applicant, job=job).first()
+    if job_application:
+        # Set the application status to rejected (assuming `status` field)
+        job_application.status = 'rejected'
+        job_application.save()
 
-            # Send a notification to the applicant
-            NotificationMessage.objects.create(
-                sender=request.user,
-                receiver=applicant,  # The applicant is the receiver
-                subject=f'Selection for {job.title}',
-                body=f'You are selected for the first round mock section by {company_name}.check you email.',
-            )
-
-            # Optionally: Delete the original notification
-            notification.delete()
-            messages.success(request, 'The applicant has been marked as selected and notified.')
-        else:
-            messages.error(request, 'Job application for this user does not exist.')
-            return redirect('application_notifications')
-
-        # Redirect to the "Selected Candidates" page
-        return redirect('selected_candidates', job_id=job.id)
-
-    elif action == 'deleted':
-        # Optionally: Send a notification to the applicant about the rejection or deletion
+        # Send a rejection notification to the applicant
         NotificationMessage.objects.create(
             sender=request.user,
-            receiver=applicant,
-            subject=f'Application for {job.title} has been deleted',
-            body=f'Your application for the {job.title} position at {company_name} has been deleted.',
+            receiver=applicant,  # The applicant receives the notification
+            subject=f'Application for {job.title} Rejected',
+            body=f'Your application for the {job.title} position at {company_name} has been rejected.',
         )
 
-        # Delete the original notification
+        # Optionally: Delete the original notification
         notification.delete()
-        messages.success(request, 'The notification has been deleted.')
 
+        messages.success(request, f'The applicant {applicant.username} has been rejected and notified.')
+    else:
+        messages.error(request, 'Job application for this user does not exist.')
+        return redirect('application_notifications')
+
+    # Redirect back to the notifications page
     return redirect('application_notifications')
 
 
-@login_required
-def selected_candidates(request):
-    company = get_object_or_404(CompanyProfile, user=request.user)  # Ensure company is being fetched correctly
-    # Fetch all jobs associated with the logged-in company user
-    company_jobs = Job.objects.filter(company__user=request.user)
 
-    # Create a dictionary to store selected candidates for each job
-    job_selected_candidates = {}
+def mark_as_selected(job_application):
+    job_application.is_selected = True
+    job_application.save()
 
-    for job in company_jobs:
-        # Fetch all selected applications for each job
-        selected_applications = JobApplication.objects.filter(job=job, is_selected=True)
-        if selected_applications.exists():
-            job_selected_candidates[job] = selected_applications
 
-    return render(request, 'companypanel/selected_candidates.html', {
-        'job_selected_candidates': job_selected_candidates,
-        'company':company ,
-    })
+class SelectedCandidatesView(View):
+    template_name = 'companypanel/selected_candidates.html'
+
+    def get(self, request, job_id):
+        job = get_object_or_404(Job, id=job_id)
+        selected_candidates = JobApplication.objects.filter(job=job, is_selected=True)
+        
+        # Group selected candidates by job
+        job_selected_candidates = {
+            job: selected_candidates,
+        }
+
+        return render(request, self.template_name, {
+            'job_selected_candidates': job_selected_candidates,
+        })
 
 
 def delete_notification(request, notification_id):
@@ -233,7 +341,9 @@ def delete_notification(request, notification_id):
         notification = get_object_or_404(ApplicationNotification, id=notification_id, company_user=request.user)
         notification.delete()
         return redirect('application_notifications')  # Redirect back to the notification page
-    
+
+
+
 
 
 def company_logout(request):

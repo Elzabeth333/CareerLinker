@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>User Login</title>
+    <title>Admin Login</title>
     <link rel="stylesheet" href="{% static 'sitevisitor/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'sitevisitor/css/main.css' %}">
     <style>
@@ -42,8 +42,8 @@
 <body>
 
 <div class="login-container">
-    <h2 class="text-center mb-4">User Login</h2>
-    <form method="post" action="{% url 'user_login' %}">
+    <h2 class="text-center mb-4">Admin Login</h2>
+    <form method="post" action="{% url 'admin_login' %}">
         {% csrf_token %}
         {{ form.as_p }}
         <div class="form-group">

@@ -99,6 +99,19 @@ def userhome(request):
     # Fetch the languages associated with the profile
     languages = LanguageProficiency.objects.filter(profile=profile)
 
+
+    profile = get_object_or_404(CompleteProfile, user=request.user)
+    
+    # Get all notifications where the user is the receiver
+    received_notifications = NotificationMessage.objects.filter(
+        receiver=request.user
+    ).order_by('-created_at')
+    
+    # Count of unread notifications (assuming 'is_read' field tracks read status)
+    unread_notifications_count = received_notifications.filter(is_read=False).count()
+
+
+
     context = {
         'logged_user': logged_user,
         'f_profile':f_profile,
@@ -109,9 +122,29 @@ def userhome(request):
         'companies': companies,
         'user_skills': user_skills,
         'languages': languages,
+        'unread_notifications_count':unread_notifications_count,
+        
     }
 
     return render(request, 'userpanel/userhome.html', context)
+
+
+def search_jobs(request):
+    logged_user = request.user
+    profile = get_object_or_404(CompleteProfile, user=logged_user)
+    query = request.GET.get('q')
+    jobs = Job.objects.all()
+
+    if query:
+        jobs = jobs.filter(
+            Q(title__icontains=query) |
+            Q(location__icontains=query) |
+            Q(company__company_name__icontains=query)
+        )
+
+    return render(request, 'userpanel/search_jobs.html', {'jobs': jobs, 'query': query , 'profile':profile})
+
+
 
 
 @login_required

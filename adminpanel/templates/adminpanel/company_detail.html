@@ -1,0 +1,46 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ company.company_name }} Details</h2>
+    
+    <div class="card mt-4">
+        <div class="card-header">
+            <h4>{{ company.company_name }}</h4>
+        </div>
+        <div class="card-body">
+            <p><strong>Registration ID:</strong> {{ company.registration_id }}</p>
+            <p><strong>Website:</strong> <a href="{{ company.website }}" target="_blank">{{ company.website }}</a></p>
+            <p><strong>Description:</strong> {{ company.description }}</p>
+            <p><strong>Created At:</strong> {{ company.created_at|date:"Y-m-d" }}</p>
+            <p><strong>Updated At:</strong> {{ company.updated_at|date:"Y-m-d" }}</p>
+
+            {% if company.company_logo %}
+                <p><strong>Company Logo:</strong></p>
+                <img src="{{ company.company_logo.url }}" alt="Company Logo" style="max-width: 200px;">
+            {% endif %}
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'company_list' %}" class="btn btn-primary">Back to Company List</a>
+        </div>
+    </div>
+</div>
+<style>
+    .card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header h4 {
+    margin: 0;
+}
+
+.card-body p {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+}
+
+</style>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'adminpanel/admin_base.html' %}
+
+{% block content %}
+
+<style>
+    /* Styling for the table */
+    table {
+        width: 80%; /* Adjust width as needed */
+        margin-left: 20px; /* Adds left margin for alignment */
+        border-collapse: collapse;
+    }
+
+    th, td {
+        padding: 10px; /* Adds padding inside cells */
+        border: 1px solid #ddd; /* Border around the cells */
+        text-align: left; /* Align text to the left */
+    }
+
+    th {
+        background-color: #f2f2f2; /* Light grey background for header */
+    }
+
+    /* Button styling */
+    .btn {
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        text-decoration: none;
+        color: white;
+        font-size: 14px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+    }
+
+    /* Add margin to action buttons */
+    .actions a {
+        margin-right: 10px; /* Adds space between buttons */
+    }
+</style>
+
+<div style="margin-left: 200px;margin-top: 100px;height: 700px;">
+    <h2>Applicant User List</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for applicant in applicants %}
+<tr>
+    <td>{{ applicant.user.username }}</td>
+    <td>{{ applicant.user.email }}</td>
+    <td class="actions">
+        <a href="{% url 'view_applicant' applicant.id %}" class="btn btn-info">View</a>
+        {% if not applicant.user.is_active %}
+            <a href="{% url 'unhide_applicant' applicant.id %}" class="btn btn-success">Unhide</a>
+        {% else %}
+            <a href="{% url 'hide_applicant' applicant.id %}" class="btn btn-danger">Hide</a>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

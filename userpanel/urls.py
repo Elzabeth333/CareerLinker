@@ -1,5 +1,5 @@
 from django.urls import  path
-from .views import userhome , add_profile , all_companies , jobs_by_company , view_profile , recommended_jobs ,  all_jobs , user_notifications , edit_profile , add_language_proficiency , user_logout , job_detail , apply_for_job
+from .views import userhome , add_profile , all_companies , jobs_by_company , search_jobs , view_profile , recommended_jobs ,  all_jobs , user_notifications , edit_profile , add_language_proficiency , user_logout , job_detail , apply_for_job
 
 urlpatterns = [
     path('', userhome , name= 'userhome'),
@@ -15,5 +15,6 @@ urlpatterns = [
     path('all_jobs/', all_jobs, name='all_jobs'),
     path('all_companies/', all_companies, name='all_companies'),
     path('company/<int:company_id>/jobs/', jobs_by_company, name='jobs_by_company'),
+    path('search_jobs/', search_jobs, name='search_jobs'),
    
 ]

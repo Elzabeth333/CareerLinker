@@ -59,14 +59,27 @@ class UserLoginForm(forms.Form):
     username = forms.CharField(
         max_length=255,
         label="Username",
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        required=True  # Ensures the field is mandatory
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+        required=True
     )
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
         label="Password",
-        required=True  # Ensures the field is mandatory
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+        required=True
     )
 
+
+class AdminLoginForm(forms.Form):
+    username = forms.CharField(
+        max_length=255,
+        label="Username",
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+        required=True
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+        required=True
+    )
 
 

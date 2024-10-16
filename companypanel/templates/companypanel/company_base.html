@@ -76,6 +76,13 @@
               </a>
 
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'company_home' %}">
+                  <p style="margin-left: 50px;">Home</p>
+              </a>
+          </li>
+          
+            
             <li class="nav-section">
               <span class="sidebar-mini-icon">
                 <i class="fa fa-ellipsis-h"></i>
@@ -123,14 +130,15 @@
                     </a>
                   </li>
                   <li>
-                    {% if job and job.id %}
-    <a href="{% url 'selected_candidates'  %}">
+                    
+                    {% if job %}
+    <a href="{% url 'selected_candidates' job.id %}">
         <span class="sub-item">Selected Candidates</span>
     </a>
 {% else %}
-    <p>No job available for selected candidates.</p>
+    <span class="sub-item">No Job Selected</span>
 {% endif %}
-                    </a>
+                 
                   </li>
                 </ul>
               </div>
@@ -156,48 +164,9 @@
                 </ul>
               </div>
             </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#tables">
-                <i class="fas fa-table"></i>
-                <p>Notifications</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="tables">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="tables/tables.html">
-                      <span class="sub-item">Manage Email Templates</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="tables/datatables.html">
-                      <span class="sub-item">View Notification Logs</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a data-bs-toggle="collapse" href="#maps">
-                <i class="fas fa-map-marker-alt"></i>
-                <p>Reports & Analytics</p>
-                <span class="caret"></span>
-              </a>
-              <div class="collapse" id="maps">
-                <ul class="nav nav-collapse">
-                  <li>
-                    <a href="maps/googlemaps.html">
-                      <span class="sub-item">Job Listing Performance</span>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="maps/jsvectormap.html">
-                      <span class="sub-item">User Activity Reports</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </li>
+            
+              
+            
             <li class="nav-item">
               <a data-bs-toggle="collapse" href="#charts">
                 <i class="far fa-chart-bar"></i>
@@ -208,14 +177,10 @@
                 <ul class="nav nav-collapse">
                   <li>
                     <a href="charts/charts.html">
-                      <span class="sub-item">System Configuration</span>
+                      <span class="sub-item">Reset password</span>
                     </a>
                   </li>
-                  <li>
-                    <a href="charts/sparkline.html">
-                      <span class="sub-item">Database Backups</span>
-                    </a>
-                  </li>
+                  
                 </ul>
               </div>
             </li>
@@ -403,7 +368,7 @@
                   aria-expanded="false"
                 >
                   <i class="fa fa-bell"></i>
-                  <span class="notification">4</span>
+                  <span class="notification"></span>
                 </a>
                 <ul
                   class="dropdown-menu notif-box animated fadeIn"
@@ -583,7 +548,7 @@
                           <h4>{{ logged_user.username }}</h4>
                           <p class="text-muted">{{ logged_user.username }}123@gmail.com</p>
                           <a
-                            href="profile.html"
+                            href="{% url 'view_company_profile' %}"
                             class="btn btn-xs btn-secondary btn-sm"
                             >View Profile</a
                           >

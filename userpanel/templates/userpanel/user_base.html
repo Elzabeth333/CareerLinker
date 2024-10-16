@@ -32,24 +32,33 @@
                         <a class="nav-link" href="{% url 'all_companies' %}">Companies</a>
                     </li>
                 </ul>
-                <form class="d-flex ms-auto" method="GET" action="#" style="gap: 10px;">
-                    <input class="form-control me-2" type="search" placeholder="Search jobs here" name="q" aria-label="Search" value="{{ request.GET.q }}">
-                    <button class="btn btn-danger" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
+
+
+                <form method="get" action="{% url 'search_jobs' %}" class="form-inline">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="Search jobs here">
+                        <div class="input-group-append">
+                            <button class="btn btn-danger" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
                 </form>
+
+
+
                 <div class="profile-container" style="display: flex; align-items: center;margin-left: 150px;">
                     <a href="{% url 'user_notifications'  %}" class="notification-icon" style="position: relative;">
                         <i class="fas fa-bell" style="font-size: 24px; color: #6c757d;"></i>
-                        <span class="notification-badge" style="position: absolute; top: -8px; right: -8px; background-color: red; color: white; font-size: 12px; padding: 2px 6px; border-radius: 50%;">3</span>
+                        <span class="notification-badge" style="position: absolute; top: -8px; right: -8px; background-color: red; color: white; font-size: 12px; padding: 2px 6px; border-radius: 50%;">{{ unread_notifications_count }}</span>
                     </a>
-                    <a href="#" class="user-profile" onclick="openSideTab()" style="position: relative; margin-left: 50px; display: inline-block; width: 100px;">
+                    <a href="#" class="user-profile" onclick="openSideTab()" style="position: relative; margin-left: 50px; display: inline-block; width: 50px;">
                         {% if profile.profile_image and profile.profile_image.url %}
                             <img src="{{ profile.profile_image.url }}" alt="User Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
                         {% else %}
                             <img src="{% static 'path_to_default_image/default_profile.png' %}" alt="Default Profile" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid #ddd;">
                         {% endif %}
-                        <span class="profile-notification-badge" style="position: absolute; top: 0px; right: 0px; background-color: red; color: white; font-size: 12px; padding: 2px 6px; border-radius: 50%;">1</span>
+                        
                     </a>
                     
                 </div>

@@ -81,3 +81,6 @@ class ApplicationNotificationAdmin(admin.ModelAdmin):
         queryset.update(is_read=False)
         self.message_user(request, "Selected notifications have been marked as unread.")
     mark_as_unread.short_description = "Mark selected notifications as unread"
+
+
+

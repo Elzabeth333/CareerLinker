@@ -1,10 +1,121 @@
 {% extends 'adminpanel/admin_base.html' %}
-{% load static %}
-
-{% block title %}
-Home
-{% endblock %}
 
 {% block content %}
+<div class="container" style="margin-left: 100px;margin-right: 150px;">
+    <!-- Statistics Section -->
+    <div class="stats-section">
+        <div class="stat-card">
+            <h3>Total Companies</h3>
+            <p class="stat-number">{{ total_companies }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Users</h3>
+            <p class="stat-number">{{ total_users }}</p>
+        </div>
+        <div class="stat-card">
+            <h3>Total Jobs</h3>
+            <p class="stat-number">{{ total_jobs }}</p>
+        </div>
+    </div>
 
+    <!-- Company List Section -->
+    <div class="list-section">
+        <h4>Latest Companies</h4>
+        <ul class="flex-list">
+            {% for company in company_list %}
+                <li class="list-item">
+                    <strong>{{ company.company_name }}</strong>
+                    <p>Registered on {{ company.created_at|date:"Y-m-d" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Job List Section -->
+    <div class="list-section">
+        <h4>Latest Jobs</h4>
+        <ul class="flex-list">
+            {% for job in job_list %}
+                <li class="list-item">
+                    <strong>{{ job.title }}</strong> at {{ job.company.company_name }}
+                    <p>Posted on {{ job.posted_at|date:"Y-m-d" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- User List Section -->
+    <div class="list-section">
+        <h4>Latest Users</h4>
+        <ul class="flex-list">
+            {% for user in user_list %}
+                <li class="list-item">
+                    <strong>{{ user.username }}</strong>
+                    <p>Joined on {{ user.date_joined|date:"Y-m-d" }}</p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<style>
+    .container {
+    padding: 20px;
+}
+
+.stats-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    color: #007bff;
+    margin-top: 10px;
+}
+
+.list-section {
+    margin-bottom: 40px;
+}
+
+.flex-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.list-item {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    flex-basis: 30%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.list-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h4 {
+    margin-bottom: 20px;
+}
+
+</style>
 {% endblock %}

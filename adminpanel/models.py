@@ -12,6 +12,7 @@ class CompanyProfile(models.Model):
     company_logo = models.ImageField(upload_to='media/')
     website = models.URLField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
+    is_active = models.BooleanField(default=True)  # Add this field for activation/deactivation
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -171,22 +172,17 @@ class JobApplication(models.Model):
 
 
 
-#   class Applicant(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applicants')
-#     resume = models.FileField(upload_to='resumes/')
-#     cover_letter = models.TextField(blank=True, null=True)
-#     applied_at = models.DateTimeField(auto_now_add=True)
+class Notification(models.Model):
+    NOTIFICATION_TYPES = (
+        ('company', 'New Company Added'),
+        ('job', 'New Job Added'),
+        ('user', 'New User Registered'),
+    )
+    
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+    content_object_id = models.PositiveIntegerField(null=True, blank=True)  # ID of the associated company, job, or user
+    message = models.CharField(max_length=255)  # Custom message
+    created_at = models.DateTimeField(auto_now_add=True)
 
-#     def __str__(self):
-#         return f"{self.user.username} applied for {self.job.title}"
-
-# class Bookmark(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='bookmarks')
-#     bookmarked_at = models.DateTimeField(auto_now_add=True)
-
-#     def __str__(self):
-#         return f"{self.user.username} bookmarked {self.job.title}"
-
-
+    def __str__(self):
+        return self.message

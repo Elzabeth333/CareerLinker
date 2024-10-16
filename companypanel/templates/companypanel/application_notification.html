@@ -128,7 +128,7 @@
                     {% else %}
                         <span class="badge badge-secondary">Selected</span>
                     {% endif %}
-                    <a href="{% url 'mark_application' notification.id 'deleted' %}" class="btn btn-danger btn-sm">Delete Notification</a>
+                    <a href="{% url 'reject_application' notification.id %}" class="btn btn-danger btn-sm">Reject</a>
                 </div>
             </li>
         {% endfor %}

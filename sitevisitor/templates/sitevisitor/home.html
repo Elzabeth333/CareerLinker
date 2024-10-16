@@ -124,13 +124,12 @@
 							<li><a href="{% url 'home' %}">Home</a></li> 
 							<li><a href="{% url 'user_login' %}">Login</a></li>
 							<li><a href="{% url 'user_register' %}">Register</a></li>
-							<li><a href="{% url 'user_login' %}">Companies</a></li> 
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dashboard</a>
 								<ul class="dropdown-menu animated fadeOutUp" style="display: none; opacity: 1;">
 									<li class="active"><a href="{% url 'company_register' %}">Company Register</a></li>
 									<li class="active"><a href="{% url 'company_login' %}">Company login</a></li>
-									<li class="active"><a href="{% url 'admin_login' %}">Admin login</a></li>
+									
 									
 								</ul>
 							</li>
@@ -350,114 +349,25 @@
 								<div class="pic">
 									<img src="{% static 'sitevisitor/img/client-1.jpg' %}" alt="">
 								</div>
-								<p class="description">
+								<p class="review">
 									" Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem commodi eligendi facilis itaque minus non odio, quaerat ullam unde voluptatum? "
 								</p>
 								<h3 class="testimonial-title">williamson</h3>
 								<span class="post">Web Developer</span>
 							</div>
-
-							<div class="testimonial">
-								<div class="pic">
-									<img src="{% static 'sitevisitor/img/client-2.jpg' %}" alt="">
-								</div>
-								<p class="description">
-									" Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem commodi eligendi facilis itaque minus non odio, quaerat ullam unde voluptatum? "
-								</p>
-								<h3 class="testimonial-title">kristiana</h3>
-								<span class="post">Web Designer</span>
-							</div>
+							<!-- Review Input Section -->
 							
-							<div class="testimonial">
-								<div class="pic">
-									<img src="{% static 'sitevisitor/img/client-3.jpg' %}" alt="">
-								</div>
-								<p class="description">
-									" Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem commodi eligendi facilis itaque minus non odio, quaerat ullam unde voluptatum? "
-								</p>
-								<h3 class="testimonial-title">kristiana</h3>
-								<span class="post">Web Designer</span>
+
 							</div>
-							
-							<div class="testimonial">
-								<div class="pic">
-									<img src="{% static 'sitevisitor/img/client-4.jpg' %}" alt="">
-								</div>
-								<p class="description">
-									" Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem commodi eligendi facilis itaque minus non odio, quaerat ullam unde voluptatum? "
-								</p>
-								<h3 class="testimonial-title">kristiana</h3>
-								<span class="post">Web Designer</span>
+							<div class="review-input">
+								<h2>Submit Your Review</h2>
+								<form id="review-form">
+									<input type="text" name="name" placeholder="Your Name" required>
+									<input type="text" name="position" placeholder="Your Position" required>
+									<textarea name="review" placeholder="Your Review" required></textarea>
+									<button type="submit">Submit Review</button>
+								</form>
 							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-		
-		<section class="pricind">
-			<div class="container">
-				<div class="col-md-4 col-sm-4">
-					<div class="package-box">
-						<div class="package-header">
-							<i class="fa fa-cog" aria-hidden="true"></i>
-							<h3>Professional</h3>
-						</div>
-						<div class="package-info">
-							<ul>
-							<li>3 Designs</li>
-							<li>3 PSD Designs</li>
-							<li>4 color Option</li>
-							<li>10GB Disk Space</li>
-							<li>Full Support</li>
-							</ul>
-						</div>
-						<div class="package-price">
-							<h2><sup>$ </sup>10<sub>/Month</sub></h2>
-						</div>
-						<button type="submit" class="btn btn-package">Sign Up</button>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-4">
-					<div class="package-box">
-						<div class="package-header">
-							<i class="fa fa-star-half-o" aria-hidden="true"></i>
-							<h3>Standard</h3>
-						</div>
-						<div class="package-info">
-							<ul>
-							<li>3 Designs</li>
-							<li>3 PSD Designs</li>
-							<li>4 color Option</li>
-							<li>10GB Disk Space</li>
-							<li>Full Support</li>
-							</ul>
-						</div>
-						<div class="package-price">
-							<h2><sup>$ </sup>110<sub>/Month</sub></h2>
-						</div>
-						<button type="submit" class="btn btn-package">Sign Up</button>
-					</div>
-				</div>
-				<div class="col-md-4 col-sm-4">
-					<div class="package-box">
-						<div class="package-header">
-							<i class="fa fa-cube" aria-hidden="true"></i>
-							<h3>Premium</h3>
-						</div>
-						<div class="package-info">
-							<ul>
-							<li>3 Designs</li>
-							<li>3 PSD Designs</li>
-							<li>4 color Option</li>
-							<li>10GB Disk Space</li>
-							<li>Full Support</li>
-							</ul>
-						</div>
-						<div class="package-price">
-							<h2><sup>$ </sup>170<sub>/Month</sub></h2>
-						</div>
-						<button type="submit" class="btn btn-package">Sign Up</button>
 					</div>
 				</div>
 			</div>
@@ -466,82 +376,29 @@
 		
 
 
-		<section class="newsletter">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-10 col-sm-10 col-md-offset-1 col-sm-offset-1">
-					<h2>Want More Job & Latest Job? </h2>
-					<p>Subscribe to our mailing list to receive an update when new Job arrive!</p>
-					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Type Your Email Address...">
-						<span class="input-group-btn">
-							<button type="button" class="btn btn-default">subscribe!</button>
-						</span>
-					</div>
-					</div>
-				</div>
-			</div>
-		</section>
+		
 			
 		<!-- footer start -->
-		<footer>
-			<div class="container">
-				<div class="col-md-3 col-sm-6">
-					<h4>Featured Job</h4>
-					<ul>
-						<li><a href="#">Browse Jobs</a></li>
-						<li><a href="#">Premium MBA Jobs</a></li>
-						<li><a href="#">Access Database</a></li>
-						<li><a href="#">Manage Responses</a></li>
-						<li><a href="#">Report a Problem</a></li>
-						<li><a href="#">Mobile Site</a></li>
-						<li><a href="#">Jobs by Skill</a></li>
-					</ul>
+		<footer style="background-color: black;">
+			<div class="container" style="background-color: black;">
+				<div class="social-media">
+					<a href="{% static 'sitevisitor/img/download.png' %}" target="_blank">
+						<img src="{% static 'sitevisitor/img/insta.png' %}" alt="Instagram" />
+					</a>
+					<a href="{% static 'sitevisitor/img/facebook.jpeg' %}" target="_blank">
+						<img src="{% static 'sitevisitor/img/facebook.jpeg' %}" alt="Facebook" />
+					</a>
+					<a href="{% static 'sitevisitor/img/facebook.jpeg' %}" target="_blank">
+						<img src="{% static 'sitevisitor/img/github.jpeg' %}" alt="GitHub" />
+					</a>
+					
 				</div>
-				
-				<div class="col-md-3 col-sm-6">
-					<h4>Latest Job</h4>
-					<ul>
-						<li><a href="#">Browse Jobs</a></li>
-						<li><a href="#">Premium MBA Jobs</a></li>
-						<li><a href="#">Access Database</a></li>
-						<li><a href="#">Manage Responses</a></li>
-						<li><a href="#">Report a Problem</a></li>
-						<li><a href="#">Mobile Site</a></li>
-						<li><a href="#">Jobs by Skill</a></li>
-					</ul>
-				</div>
-				
-				<div class="col-md-3 col-sm-6">
-					<h4>Reach Us</h4>
-					<address>
-					<ul>
-					<li>1201, Murakeu Market, QUCH07<br>
-					United Kingdon</li>
-					<li>Email: Support@job.com</li>
-					<li>Call: 044 123 458 65879</li>
-					<li>Skype: job@skype</li>
-					<li>FAX: 123 456 85</li>
-					</ul>
-					</address>
-				</div>
-				
-				<div class="col-md-3 col-sm-6">
-					<h4>Drop A Mail</h4>
-					<form>
-						<input type="text" class="form-control input-lg" placeholder="Your Name">
-						<input type="text" class="form-control input-lg" placeholder="Email...">
-						<textarea class="form-control" placeholder="Message"></textarea>
-						<button type="submit" class="btn btn-primary">Login</button>
-					</form>
-				</div>
-				
-				
 			</div>
 			<div class="copy-right">
-			 <p>&copy;Copyright 2024 Career Linker | Design By <a href="https://themezhub.com/">Elzabeth Joseph</a></p>
+				<p>&copy; Copyright 2024 Career Linker | Design By <a href="https://themezhub.com/">Elzabeth Joseph</a></p>
 			</div>
 		</footer>
+		
 		 
 		<script type="text/javascript" src="{% static 'sitevisitor/js/jquery.min.js' %}"></script>
 		<script src="{% static 'sitevisitor/js/bootstrap.min.js' %}"></script>
@@ -549,4 +406,97 @@
 		<script src="{% static 'sitevisitor/js/bootsnav.js' %}"></script>
 		<script src="{% static 'sitevisitor/js/main.js' %}"></script>
     </body>	
+	<style>
+		.social-media {
+    display: flex;
+    justify-content: center; /* Center the logos */
+    gap: 15px; /* Spacing between logos */
+}
+
+.social-media img {
+    width: 50px; /* Adjust size as needed */
+    height: auto; /* Maintain aspect ratio */
+}
+.testimonials {
+    padding: 60px 0;
+    background-color: #333;
+    color: #fff;
+}
+
+.testimonial {
+    text-align: center;
+}
+
+.testimonial .pic img {
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+}
+
+.review-input {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.review-input h2 {
+    margin-bottom: 20px;
+}
+
+.review-input input,
+.review-input textarea {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+.review-input button {
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.review-input button:hover {
+    background-color: #ccc;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .review-input input,
+    .review-input textarea {
+        max-width: 100%;
+    }
+}
+
+	</style>
+
+<script>
+	document.getElementById('review-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const name = this.name.value;
+    const position = this.position.value;
+    const review = this.review.value;
+
+    const newTestimonial = document.createElement('div');
+    newTestimonial.className = 'testimonial';
+
+    newTestimonial.innerHTML = `
+        <div class="pic"><img src="path/to/default-image.jpg" alt=""></div>
+        <p class="review">"${review}"</p>
+        <h3 class="testimonial-title">${name}</h3>
+        <span class="post">${position}</span>
+    `;
+
+    document.querySelector('#testimonial-slider').appendChild(newTestimonial);
+    this.reset(); // Clear the form
+});
+
+</script>
 </html>
